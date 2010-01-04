@@ -1,0 +1,51 @@
+require File.dirname(__FILE__) + "/../spec_helper"
+
+describe RailsTools::Helper, :type => :helper do
+  describe "flash_messages" do
+    subject { helper.flash_messages }
+
+    before do
+      flash[:notice] = "Notice"
+      flash[:warning] = "Warning"
+      flash[:error] = "Error"
+    end
+
+    it "should render multiple flash messages" do
+      subject.should have_tag("p.message", :count => 3)
+    end
+
+    it "should render error message" do
+      subject.should have_tag("p.error", "Error")
+    end
+
+    it "should render warning message" do
+      subject.should have_tag("p.warning", "Warning")
+    end
+
+    it "should render notice message" do
+      subject.should have_tag("p.notice", "Notice")
+    end
+  end
+
+  describe "block wrappers" do
+    it "should wrap content into main div" do
+      helper.main { "Main" }.should have_tag("div#main", "Main")
+    end
+
+    it "should wrap content into sidebar div" do
+      helper.sidebar { "Sidebar" }.should have_tag("div#sidebar", "Sidebar")
+    end
+
+    it "should wrap content into footer div" do
+      helper.footer { "Footer" }.should have_tag("div#footer", "Footer")
+    end
+
+    it "should wrap content into header div" do
+      helper.header { "Header" }.should have_tag("div#header", "Header")
+    end
+
+    it "should use other options like css class" do
+      helper.wrapper(:id => "header", :class => "rounded") { "Header" }.should have_tag("div#header.rounded", "Header")
+    end
+  end
+end
