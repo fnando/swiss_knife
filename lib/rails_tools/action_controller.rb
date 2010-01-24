@@ -1,11 +1,16 @@
 module RailsTools
   module ActionController
     module InstanceMethods
-      def self.included(klass)
-        klass.helper_method :page_title, :set_page_title
+      def self.included(base)
+        base.helper_method :page_title, :set_page_title
       end
 
       private
+
+      def generate_css_from_less
+        RailsTools::Less.export :from => File.join(Rails.root, "app", "stylesheets"),
+                                :to   => File.join(Rails.root, "public", "stylesheets")
+      end
 
       # Retrieve the page title.
       # If no page title has been set through the method `set_page_title`, will use the
@@ -24,7 +29,6 @@ module RailsTools
 
           @page_title_options ||= {}
           @page_title_options.merge!(:default => "#{controller_name.titleize} #{action_name.titleize}")
-
           I18n.translate("titles.#{controller_name}.#{action_name}", @page_title_options)
         end
       end

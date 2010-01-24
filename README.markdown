@@ -6,6 +6,21 @@ Here's my swiss-knife Rails helpers.
 Usage
 -----
 
+### Less CSS
+
+If you're using [Less CSS](http://lesscss.org), Rails Tools will automatically generate all files from `app/stylesheets/*.{css,less}` to `public/stylesheets` on development environment.
+
+You can have partials (`_partial.less`) that will be merged by using the `@import` rule, but this will not generate a file on `public/stylesheets`.
+
+	# app/stylesheets/main.less
+	@import "_shared";
+
+	* { margin: 0; padding: 0; }
+
+All files `app/stylesheets/*.css` will be copied to `public/stylesheets`.
+
+For production, you can use the rake task `rake less:generate`.
+
 ### page title
 
 Set the page title in a clean way.
