@@ -8,7 +8,7 @@ module RailsTools
         flash.discard(name)
       end
 
-      html.respond_to?(:html_safe!) ? html.html_safe! : html
+      safe_html(html)
     end
 
     def rails_meta_tags
@@ -24,7 +24,7 @@ module RailsTools
         :class => "#{controller.controller_name}-#{controller.action_name}"
       }.merge(options)
 
-      content_tag :body, capture(&block), options
+      safe_html content_tag(:body, capture(&block), options)
     end
 
     def main(options = {}, &block)
@@ -44,7 +44,11 @@ module RailsTools
     end
 
     def wrapper(options = {}, &block)
-      content_tag :div, capture(&block), options
+      safe_html content_tag(:div, capture(&block), options)
+    end
+
+    def safe_html(html)
+      html.respond_to?(:html_safe!) ? html.html_safe! : html
     end
   end
 end
