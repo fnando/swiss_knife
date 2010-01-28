@@ -12,7 +12,7 @@ module RailsTools
     end
 
     def rails_meta_tags
-      %[
+      safe_html %[
         <meta name="rails-controller" content="#{controller.controller_name}" />
     	  <meta name="rails-action" content="#{controller.action_name}" />
     	]
