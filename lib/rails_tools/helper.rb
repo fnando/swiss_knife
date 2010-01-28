@@ -11,6 +11,22 @@ module RailsTools
       html.respond_to?(:html_safe!) ? html.html_safe! : html
     end
 
+    def rails_meta_tags
+      %[
+        <meta name="rails-controller" content="#{controller.controller_name}" />
+    	  <meta name="rails-action" content="#{controller.action_name}" />
+    	]
+    end
+
+    def body(options = {}, &block)
+      options = {
+        :id => "#{controller.controller_name}-page",
+        :class => "#{controller.controller_name}-#{controller.action_name}"
+      }.merge(options)
+
+      content_tag :body, capture(&block), options
+    end
+
     def main(options = {}, &block)
       wrapper(options.merge(:id => "main"), &block)
     end

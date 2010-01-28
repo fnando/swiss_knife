@@ -1,6 +1,12 @@
 require File.dirname(__FILE__) + "/../spec_helper"
 
 describe RailsTools::Helper, :type => :helper do
+  before do
+    controller = helper.send(:controller)
+    controller.stub!(:controller_name => "sample", :action_name => "index")
+    helper.stub!(:controller).and_return(controller)
+  end
+
   describe "flash_messages" do
     subject { helper.flash_messages }
 
@@ -28,6 +34,24 @@ describe RailsTools::Helper, :type => :helper do
   end
 
   describe "block wrappers" do
+    context "body" do
+      it "should use defaults" do
+        html = helper.body { "Body" }
+
+        html.should have_tag("body", :count => 1)
+        html.should have_tag("body#sample-page")
+        html.should have_tag("body.sample-index")
+      end
+
+      it "should use custom settings" do
+        html = helper.body(:id => "page", :class => "dark", :onload => "init();") { "Body" }
+
+        html.should have_tag("body#page")
+        html.should have_tag("body.dark")
+        html.should have_tag("body[onload=init();]")
+      end
+    end
+
     it "should wrap content into main div" do
       helper.main { "Main" }.should have_tag("div#main", "Main")
     end
@@ -46,6 +70,16 @@ describe RailsTools::Helper, :type => :helper do
 
     it "should use other options like css class" do
       helper.wrapper(:id => "header", :class => "rounded") { "Header" }.should have_tag("div#header.rounded", "Header")
+    end
+  end
+
+  describe "rails meta tag" do
+    it "should contain meta tags" do
+      html = helper.rails_meta_tags
+
+      html.should have_tag("meta", :count => 2)
+      html.should have_tag("meta[name=rails-controller][content=sample]")
+      html.should have_tag("meta[name=rails-action][content=index]")
     end
   end
 end

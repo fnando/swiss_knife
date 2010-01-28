@@ -21,6 +21,29 @@ All files `app/stylesheets/*.css` will be copied to `public/stylesheets`.
 
 For production, you can use the rake task `rake less:generate`.
 
+### dispatcher tag
+
+If you're using <http://github.com/fnando/rails-js>, this helper will create the meta tags.
+
+	<%= rails_meta_tags %>
+
+### body
+
+Create the `body` tag setting some attributes:
+
+	<% body do %>
+	<% end %>
+
+Will be converted to
+
+	<body id="sample-page" class="sample-index">
+	</body>
+
+Set any attribute by providing a hash:
+
+	<% body :id => "foo", :class => "bar", :onload => "init();" do %>
+	<% end %>
+
 ### page title
 
 Set the page title in a clean way.
