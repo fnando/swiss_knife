@@ -14,21 +14,69 @@ describe RailsTools::ActionController, :type => :controller do
     end
 
     it "should use default title" do
-      controller.stub!(:action_name).and_return("create")
-      controller.send(:page_title).should == "Sample Create"
+      controller.stub!(:action_name).and_return("profile")
+      controller.send(:page_title).should == "Sample Profile"
     end
 
     it "should use scoped title" do
+      translations :index => "My sample index"
       controller.stub!(:action_name).and_return("index")
 
       controller.send(:page_title).should == "My sample index"
     end
 
     it "should use scoped title with interpolation" do
+      translations :show => "{{name}}'s page"
       controller.stub!(:action_name).and_return("show")
       controller.send(:set_page_title, nil, :name => "John")
 
       controller.send(:page_title).should == "John's page"
+    end
+
+    it "should not return aliased title for create action" do
+      translations :create => "My create page"
+      controller.stub!(:action_name).and_return("create")
+
+      controller.send(:page_title).should == "My create page"
+    end
+
+    it "should return aliased title for create action" do
+      translations :new => "My new page"
+      controller.stub!(:action_name).and_return("create")
+
+      controller.send(:page_title).should == "My new page"
+    end
+
+    it "should not return aliased title for update action" do
+      translations :update => "My update page"
+      controller.stub!(:action_name).and_return("update")
+
+      controller.send(:page_title).should == "My update page"
+    end
+
+    it "should return aliased title for update action" do
+      translations :edit => "My edit page"
+      controller.stub!(:action_name).and_return("update")
+
+      controller.send(:page_title).should == "My edit page"
+    end
+
+    it "should not return aliased title for remove action" do
+      translations :remove => "My remove page"
+      controller.stub!(:action_name).and_return("remove")
+
+      controller.send(:page_title).should == "My remove page"
+    end
+
+    it "should return aliased title for update action" do
+      translations :destroy => "My destroy page"
+      controller.stub!(:action_name).and_return("remove")
+
+      controller.send(:page_title).should == "My destroy page"
+    end
+
+    def translations(messages)
+      I18n.backend.stub!(:translations).and_return(HashWithIndifferentAccess.new(:en => {:titles => {:sample => messages}}))
     end
   end
 

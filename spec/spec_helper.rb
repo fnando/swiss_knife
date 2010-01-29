@@ -14,10 +14,6 @@ ActiveRecord::Base.establish_connection :adapter => "sqlite3", :database => ":me
 # Set locale
 I18n.locale = :en
 
-# I18n additionals files
-I18n.load_path += Dir[File.dirname(__FILE__) + "/resources/**/*.yml"]
-::I18n.backend.__send__ :init_translations
-
 # Load database schema
 load File.dirname(__FILE__) + "/schema.rb"
 

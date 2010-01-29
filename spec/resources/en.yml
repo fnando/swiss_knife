@@ -1,5 +1,0 @@
-en:
-  titles:
-    sample:
-      index: "My sample index"
-      show: "{{name}}'s page"
