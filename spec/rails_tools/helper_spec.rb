@@ -5,6 +5,7 @@ describe RailsTools::Helper, :type => :helper do
     controller = helper.send(:controller)
     controller.stub!(:controller_name => "sample", :action_name => "index")
     helper.stub!(:controller).and_return(controller)
+    helper.output_buffer = ""
   end
 
   describe "flash_messages" do

@@ -24,7 +24,7 @@ module RailsTools
         :class => "#{controller.controller_name}-#{controller.action_name} #{I18n.locale}"
       }.merge(options)
 
-      safe_html content_tag(:body, capture(&block), options)
+      concat safe_html(content_tag(:body, capture(&block), options))
     end
 
     def main(options = {}, &block)
@@ -44,7 +44,7 @@ module RailsTools
     end
 
     def wrapper(options = {}, &block)
-      safe_html content_tag(:div, capture(&block), options)
+      concat safe_html(content_tag(:div, capture(&block), options))
     end
 
     def safe_html(html)
