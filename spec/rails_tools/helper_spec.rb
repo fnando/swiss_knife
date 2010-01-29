@@ -41,6 +41,7 @@ describe RailsTools::Helper, :type => :helper do
         html.should have_tag("body", :count => 1)
         html.should have_tag("body#sample-page")
         html.should have_tag("body.sample-index")
+        html.should have_tag("body.en")
       end
 
       it "should use custom settings" do

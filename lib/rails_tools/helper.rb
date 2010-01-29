@@ -21,7 +21,7 @@ module RailsTools
     def body(options = {}, &block)
       options = {
         :id => "#{controller.controller_name}-page",
-        :class => "#{controller.controller_name}-#{controller.action_name}"
+        :class => "#{controller.controller_name}-#{controller.action_name} #{I18n.locale}"
       }.merge(options)
 
       safe_html content_tag(:body, capture(&block), options)
