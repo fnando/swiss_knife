@@ -48,7 +48,13 @@ module RailsTools
     end
 
     def safe_html(html)
-      html.respond_to?(:html_safe!) ? html.html_safe! : html
+      if html.respond_to?(:html_safe)
+        html.html_safe
+      elsif html.respond_to?(:html_safe!)
+        html.html_safe!
+      else
+        html
+      end
     end
   end
 end
