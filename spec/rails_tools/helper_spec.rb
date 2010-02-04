@@ -2,9 +2,9 @@ require File.dirname(__FILE__) + "/../spec_helper"
 
 describe RailsTools::Helper, :type => :helper do
   before do
-    controller = helper.send(:controller)
-    controller.stub!(:controller_name => "sample", :action_name => "index")
-    helper.stub!(:controller).and_return(controller)
+    @controller = helper.send(:controller)
+    @controller.stub!(:controller_name => "sample", :action_name => "index")
+    helper.stub!(:controller).and_return(@controller)
     helper.output_buffer = ""
   end
 
@@ -77,11 +77,19 @@ describe RailsTools::Helper, :type => :helper do
 
   describe "rails meta tag" do
     it "should contain meta tags" do
-      html = helper.rails_meta_tags
+      @controller.class.stub!(:name).and_return("SampleController")
 
+      html = helper.rails_meta_tags
       html.should have_tag("meta", :count => 2)
       html.should have_tag("meta[name=rails-controller][content=sample]")
       html.should have_tag("meta[name=rails-action][content=index]")
+    end
+
+    it "should return normalized controller name for namespaced controller" do
+      @controller.class.stub!(:name).and_return("Admin::SampleController")
+
+      html = helper.rails_meta_tags
+      html.should have_tag("meta[name=rails-controller][content=admin_sample]")
     end
   end
 end

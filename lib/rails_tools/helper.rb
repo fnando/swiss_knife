@@ -12,8 +12,12 @@ module RailsTools
     end
 
     def rails_meta_tags
+      controller_name = controller.class.name.underscore
+      controller_name.gsub!(/\//, "_")
+      controller_name.gsub!(/_controller$/, "")
+
       safe_html %[
-        <meta name="rails-controller" content="#{controller.controller_name}" />
+        <meta name="rails-controller" content="#{controller_name}" />
     	  <meta name="rails-action" content="#{controller.action_name}" />
     	]
     end
