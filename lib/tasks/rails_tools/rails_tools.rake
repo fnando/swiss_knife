@@ -16,7 +16,7 @@ desc "Update Rails JS Javascript library"
 task "rails_js:update" => :require_env do
   require "rails_tools/rails_js"
   require "open-uri"
-  RailsTools::RailsJS.update :to => File.join(Rails.root, "public", "javascripts")
+  RailsTools::RailsJs.update :to => File.join(Rails.root, "public", "javascripts")
 end
 
 task :require_env do
