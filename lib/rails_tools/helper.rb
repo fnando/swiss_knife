@@ -67,7 +67,7 @@ module RailsTools
       url = encrypt.call("mailto:#{email}")
       label ||= encrypt.call(email)
 
-      link_to label, url
+      safe_html link_to(label, url)
     end
 
     def safe_html(html)
