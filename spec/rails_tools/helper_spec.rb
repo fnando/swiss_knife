@@ -45,6 +45,17 @@ describe RailsTools::Helper, :type => :helper do
         html.should have_tag("body.en")
       end
 
+      it "should use alias for action" do
+        @controller.stub!(:action_name).and_return("create")
+        helper.body { "Body" }.should have_tag("body.sample-new")
+
+        @controller.stub!(:action_name).and_return("update")
+        helper.body { "Body" }.should have_tag("body.sample-edit")
+
+        @controller.stub!(:action_name).and_return("destroy")
+        helper.body { "Body" }.should have_tag("body.sample-remove")
+      end
+
       it "should use custom settings" do
         html = helper.body(:id => "page", :class => "dark", :onload => "init();") { "Body" }
 

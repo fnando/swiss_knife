@@ -1,5 +1,11 @@
 module RailsTools
   module Helper
+    ACTION_ALIASES = {
+      "create" => "new",
+      "update" => "edit",
+      "destroy" => "remove"
+    }
+
     def flash_messages
       html = ""
 
@@ -23,9 +29,11 @@ module RailsTools
     end
 
     def body(options = {}, &block)
+      action_name = ACTION_ALIASES[controller.action_name] || controller.action_name
+
       options = {
         :id => "#{controller.controller_name}-page",
-        :class => "#{controller.controller_name}-#{controller.action_name} #{I18n.locale}"
+        :class => "#{controller.controller_name}-#{action_name} #{I18n.locale}"
       }.merge(options)
 
       concat safe_html(content_tag(:body, capture(&block), options))
