@@ -59,6 +59,17 @@ module RailsTools
       concat safe_html(content_tag(:div, capture(&block), options))
     end
 
+    def mail_to(email, label = nil)
+      encrypt = proc do |text|
+        text.to_enum(:each_byte).collect {|c| sprintf("&#%d;", c) }.join
+      end
+
+      url = encrypt.call("mailto:#{email}")
+      label ||= encrypt.call(email)
+
+      link_to label, url
+    end
+
     def safe_html(html)
       if html.respond_to?(:html_safe)
         html.html_safe

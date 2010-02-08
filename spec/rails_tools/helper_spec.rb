@@ -103,4 +103,23 @@ describe RailsTools::Helper, :type => :helper do
       html.should have_tag("meta[name=rails-controller][content=admin_sample]")
     end
   end
+
+  describe "mail to" do
+    before do
+      @html = helper.mail_to("john@doe.com")
+    end
+
+    it "should be encrypted" do
+      @html.should_not match(/john@doe\.com/)
+      @html.should_not have_tag("a", "john@doe.com")
+    end
+
+    it "should not have plain-text protocol" do
+      @html.should_not match(/mailto:/)
+    end
+
+    it "should use provided label" do
+      helper.mail_to("john@doe.com", "john's email").should have_tag("a", "john's email")
+    end
+  end
 end
