@@ -64,8 +64,8 @@ module RailsTools
         text.to_enum(:each_byte).collect {|c| sprintf("&#%d;", c) }.join
       end
 
-      url = encrypt.call("mailto:#{email}")
-      label ||= encrypt.call(email)
+      url = safe_html encrypt.call("mailto:#{email}")
+      label ||= safe_html encrypt.call(email)
 
       safe_html link_to(label, url)
     end
