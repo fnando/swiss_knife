@@ -20,7 +20,7 @@ task "rails_js:update" => :environment do
 end
 
 desc "Update I18n JS Javascript library"
-task "i18n_js:update" => :environment do
+task "i18n:update" => :environment do
   require "rails_tools/i18n_js"
   require "open-uri"
   RailsTools::I18nJs.update :to => File.join(Rails.root, "public", "javascripts")
