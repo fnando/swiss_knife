@@ -12,6 +12,10 @@ module RailsTools
                                 :to   => File.join(Rails.root, "public", "stylesheets")
       end
 
+      def generate_i18n_js
+        SimplesIdeias::I18n.export!
+      end
+
       # Retrieve the page title.
       # If no page title has been set through the method `set_page_title`, will use the
       # 'titles.controller.action' I18n scope with a default title in case this scope isn't set.

@@ -20,6 +20,16 @@ load File.dirname(__FILE__) + "/schema.rb"
 # Create an alias for lambda
 alias :doing :lambda
 
+# Forge http://github.com/fnando/i18n-js
+module SimplesIdeias
+  module I18n
+    extend self
+
+    def export!
+    end
+  end
+end
+
 Spec::Runner.configure do |config|
   config.before(:each) do
     `rm -rf #{File.dirname(__FILE__) + "/tmp"}`

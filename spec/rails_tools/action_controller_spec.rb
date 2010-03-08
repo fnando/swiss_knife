@@ -95,4 +95,14 @@ describe RailsTools::ActionController, :type => :controller do
       get :index
     end
   end
+
+  describe "i18n-js" do
+    it "should generate messages on before filter" do
+      # This filter is added on init.rb only on development environment.
+      SampleController.before_filter :generate_i18n_js
+      SimplesIdeias::I18n.should_receive(:export!)
+
+      get :index
+    end
+  end
 end
