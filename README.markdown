@@ -55,7 +55,7 @@ Set the page title in a clean way.
 
 	    # set attributes for I18n interpolation.
 	    # the scope is titles.controller.action.
-	    set_page_title nil, :name =>
+	    set_page_title nil, :name => "John Doe"
 	  end
 	end
 
