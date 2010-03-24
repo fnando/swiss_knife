@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + "/../spec_helper"
+require "spec_helper"
 
 describe RailsTools::Helper, :type => :helper do
   before do
@@ -120,6 +120,71 @@ describe RailsTools::Helper, :type => :helper do
 
     it "should use provided label" do
       helper.mail_to("john@doe.com", "john's email").should have_tag("a", "john's email")
+    end
+  end
+
+  describe "javascript includes" do
+    before do
+      @assets_dir = Pathname.new(File.dirname(__FILE__) + "/../resources/assets")
+      RailsTools::Assets.stub!(:public_dir).and_return(@assets_dir)
+      RailsTools::Assets.stub!(:config_file).and_return(File.dirname(__FILE__) + "/../resources/assets.yml")
+    end
+
+    it "should use defaults" do
+      html = helper.javascript_includes("application")
+
+      html.should have_tag("script[type='text/javascript']", :count => 1)
+      html.should match(%r{/javascripts/application.js(\?\d+)?})
+    end
+
+    it "should return several includes for bundle when not in production" do
+      RailsTools::Assets.stub!(:merge?).and_return(false)
+      html = helper.javascript_includes(:base)
+
+      html.should have_tag("script[type='text/javascript']", :count => 3)
+      html.should match(%r{/javascripts/application.js(\?\d+)?})
+      html.should match(%r{/javascripts/jquery.js(\?\d+)?})
+      html.should match(%r{/javascripts/rails.js(\?\d+)?})
+    end
+
+    it "should return only bundle when in production" do
+      RailsTools::Assets.stub!(:merge?).and_return(true)
+      html = helper.javascript_includes(:base)
+
+      html.should have_tag("script[type='text/javascript']", :count => 1)
+      html.should match(%r{/javascripts/base_packaged.js(\?\d+)?})
+    end
+  end
+
+  describe "stylesheet includes" do
+    before do
+      @assets_dir = Pathname.new(File.dirname(__FILE__) + "/../resources/assets")
+      RailsTools::Assets.stub!(:public_dir).and_return(@assets_dir)
+      RailsTools::Assets.stub!(:config_file).and_return(File.dirname(__FILE__) + "/../resources/assets.yml")
+    end
+
+    it "should use defaults" do
+      html = helper.stylesheet_includes("application")
+
+      html.should have_tag("link[rel='stylesheet']", :count => 1)
+      html.should match(%r{/stylesheets/application.css(\?\d+)?})
+    end
+
+    it "should return several includes for bundle when not in production" do
+      RailsTools::Assets.stub!(:merge?).and_return(false)
+      html = helper.stylesheet_includes(:base)
+
+      html.should have_tag("link[rel='stylesheet']", :count => 2)
+      html.should match(%r{/stylesheets/reset.css(\?\d+)?})
+      html.should match(%r{/stylesheets/main.css(\?\d+)?})
+    end
+
+    it "should return only bundle when in production" do
+      RailsTools::Assets.stub!(:merge?).and_return(true)
+      html = helper.stylesheet_includes(:base)
+
+      html.should have_tag("link[rel='stylesheet']", :count => 1)
+      html.should match(%r{/stylesheets/base_packaged.css(\?\d+)?})
     end
   end
 end

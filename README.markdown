@@ -96,6 +96,28 @@ There's also `header` and `footer` wrappers. You can set other attributes, like 
 	<% main :class => "rounded" do %>
 	<% end %>
 
+### Assets (JavaScripts & Stylesheets)
+
+There are two helpers that merge files like Assets Packager.
+
+	<%= javascript_includes :base %>
+	<%= stylesheet_includes :base %>
+
+You need to create a `config/assets.yml` file like this:
+
+	javascripts:
+	  base:
+	    - jquery
+	    - rails
+	    - application
+	stylesheets:
+	  base:
+	    - reset
+
+To merge files, you have to run a rake task:
+
+	$ rake assets:merge
+
 To-Do
 -----
 

@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + "/../spec_helper"
+require "spec_helper"
 
 class SampleController < ApplicationController
   def index; render :text => "index"; end
@@ -84,8 +84,8 @@ describe RailsTools::ActionController, :type => :controller do
     it "should generate css on before filter" do
       # Set source and destiny paths
       options = {
-        :from => File.join(Rails.root, "app", "stylesheets"),
-        :to   => File.join(Rails.root, "public", "stylesheets")
+        :from => File.join(::Rails.root, "app", "stylesheets"),
+        :to   => File.join(::Rails.root, "public", "stylesheets")
       }
 
       # This filter is added on init.rb only on development environment.

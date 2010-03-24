@@ -25,3 +25,30 @@ task "i18n:update" => :environment do
   require "open-uri"
   RailsTools::I18nJs.update :to => File.join(Rails.root, "public", "javascripts")
 end
+
+desc "Merge assets (JavaScript & CSS) into one single file"
+task "assets:merge" => :environment do
+  require "rails_tools/assets"
+
+  config_file = Rails.root.join("config", "assets.yml")
+
+  if File.file?(config_file)
+    RailsTools::Assets.export
+  else
+    puts "We need a config/assets.yml file. As we didn't find any, we created a sample one."
+    puts "Please tweak it before continuing."
+    File.open(config_file, "w+") do |f|
+      f << <<-TXT
+javascripts:
+  base:
+    - rails.js
+    - application.js
+stylesheets:
+  base:
+    - reset.css
+    - general.css
+      TXT
+    end
+    exit 1
+  end
+end

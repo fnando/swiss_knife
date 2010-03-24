@@ -70,6 +70,48 @@ module RailsTools
       safe_html link_to(label, url)
     end
 
+    def javascript_includes(*args)
+      options = args.extract_options!
+      html = ""
+
+      args.each do |name|
+        bundle = RailsTools::Assets.config["javascripts"][name.to_s]
+
+        if RailsTools::Assets.merge? && bundle
+          html << javascript_include_tag("#{name}_packaged", options)
+        elsif bundle
+          bundle.each do |file|
+            html << javascript_include_tag("#{file}", options)
+          end
+        else
+          html << javascript_include_tag("#{name}", options)
+        end
+      end
+
+      safe_html(html)
+    end
+
+    def stylesheet_includes(*args)
+      options = args.extract_options!
+      html = ""
+
+      args.each do |name|
+        bundle = RailsTools::Assets.config["stylesheets"][name.to_s]
+
+        if RailsTools::Assets.merge? && bundle
+          html << stylesheet_link_tag("#{name}_packaged", options)
+        elsif bundle
+          bundle.each do |file|
+            html << stylesheet_link_tag("#{file}", options)
+          end
+        else
+          html << stylesheet_link_tag("#{name}", options)
+        end
+      end
+
+      safe_html(html)
+    end
+
     def safe_html(html)
       if html.respond_to?(:html_safe)
         html.html_safe
