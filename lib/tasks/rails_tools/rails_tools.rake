@@ -33,12 +33,13 @@ task "assets:merge" => :environment do
   config_file = Rails.root.join("config", "assets.yml")
 
   if File.file?(config_file)
-    RailsTools::Assets.export
+    RailsTools::Assets.export(:javascripts)
+    RailsTools::Assets.export(:stylesheets)
   else
     puts "We need a config/assets.yml file. As we didn't find any, we created a sample one."
     puts "Please tweak it before continuing."
     File.open(config_file, "w+") do |f|
-      f << <<-TXT
+      sample = <<-TXT
 javascripts:
   base:
     - rails.js
@@ -49,6 +50,8 @@ stylesheets:
     - general.css
       TXT
     end
+
+    f << sample
     exit 1
   end
 end
