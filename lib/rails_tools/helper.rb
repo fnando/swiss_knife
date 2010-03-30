@@ -33,6 +33,8 @@ module RailsTools
         :class => "#{controller.controller_name}-#{action_name} #{I18n.locale}"
       }.merge(options)
 
+      options[:class] << (" " + options.delete(:append_class).to_s) if options[:append_class]
+
       concat safe_html(content_tag(:body, capture(&block), options))
     end
 

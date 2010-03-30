@@ -63,6 +63,19 @@ describe RailsTools::Helper, :type => :helper do
         html.should have_tag("body.dark")
         html.should have_tag("body[onload=init();]")
       end
+
+      it "should append classes" do
+        html = helper.body(:append_class => "more classes") { "Body" }
+
+        html.should have_tag("body.more")
+        html.should have_tag("body.classes")
+        html.should have_tag("body.en")
+        html.should have_tag("body.sample-index")
+      end
+
+      it "should not have append_class attribute" do
+        helper.body(:append_class => "more classes") { "Body" }.should_not have_tag("body[append_class]")
+      end
     end
 
     it "should wrap content into main div" do
