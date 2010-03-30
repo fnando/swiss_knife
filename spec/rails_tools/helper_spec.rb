@@ -86,21 +86,20 @@ describe RailsTools::Helper, :type => :helper do
     end
   end
 
-  describe "rails meta tag" do
-    it "should contain meta tags" do
+  describe "dispatcher meta tag" do
+    it "should contain meta tag" do
       @controller.class.stub!(:name).and_return("SampleController")
 
-      html = helper.rails_meta_tags
-      html.should have_tag("meta", :count => 2)
-      html.should have_tag("meta[name=rails-controller][content=sample]")
-      html.should have_tag("meta[name=rails-action][content=index]")
+      html = helper.dispatcher_tag
+      html.should have_tag("meta", :count => 1)
+      html.should have_tag("meta[name=page][content=sample#index]")
     end
 
     it "should return normalized controller name for namespaced controller" do
       @controller.class.stub!(:name).and_return("Admin::SampleController")
 
-      html = helper.rails_meta_tags
-      html.should have_tag("meta[name=rails-controller][content=admin_sample]")
+      html = helper.dispatcher_tag
+      html.should have_tag("meta[name=page][content=admin_sample#index]")
     end
   end
 

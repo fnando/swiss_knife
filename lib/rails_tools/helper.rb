@@ -17,15 +17,12 @@ module RailsTools
       safe_html(html)
     end
 
-    def rails_meta_tags
+    def dispatcher_tag
       controller_name = controller.class.name.underscore
       controller_name.gsub!(/\//, "_")
       controller_name.gsub!(/_controller$/, "")
 
-      safe_html %[
-        <meta name="rails-controller" content="#{controller_name}" />
-    	  <meta name="rails-action" content="#{controller.action_name}" />
-    	]
+      safe_html %[<meta name="page" content="#{controller_name}##{controller.action_name}" />]
     end
 
     def body(options = {}, &block)

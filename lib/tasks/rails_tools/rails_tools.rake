@@ -12,11 +12,11 @@ task "jquery:update" => :environment do
   RailsTools::Jquery.update :to => File.join(Rails.root, "public", "javascripts")
 end
 
-desc "Update Rails JS Javascript library"
-task "rails_js:update" => :environment do
-  require "rails_tools/rails_js"
+desc "Update Dispatcher JS Javascript library"
+task "dispatcher_js:update" => :environment do
+  require "rails_tools/dispatcher_js"
   require "open-uri"
-  RailsTools::RailsJs.update :to => File.join(Rails.root, "public", "javascripts")
+  RailsTools::DispatcherJs.update :to => File.join(Rails.root, "public", "javascripts")
 end
 
 desc "Update I18n JS Javascript library"
