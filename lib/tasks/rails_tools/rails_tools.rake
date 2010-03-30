@@ -42,12 +42,13 @@ task "assets:merge" => :environment do
       sample = <<-TXT
 javascripts:
   base:
-    - rails.js
+    - jquery.js
+    - dispatcher.js
+    - i18n.js
     - application.js
 stylesheets:
   base:
-    - reset.css
-    - general.css
+    - style.css
       TXT
 
       f << sample
