@@ -49,9 +49,10 @@ stylesheets:
     - reset.css
     - general.css
       TXT
+
+      f << sample
     end
 
-    f << sample
     exit 1
   end
 end
