@@ -72,7 +72,7 @@ module RailsTools
       html = ""
 
       args.each do |name|
-        bundle = RailsTools::Assets.config["javascripts"][name.to_s]
+        bundle = RailsTools::Assets.config["javascripts"][name.to_s] rescue nil
 
         if RailsTools::Assets.merge? && bundle
           html << javascript_include_tag("#{name}_packaged", options)
@@ -93,7 +93,7 @@ module RailsTools
       html = ""
 
       args.each do |name|
-        bundle = RailsTools::Assets.config["stylesheets"][name.to_s]
+        bundle = RailsTools::Assets.config["stylesheets"][name.to_s] rescue nil
 
         if RailsTools::Assets.merge? && bundle
           html << stylesheet_link_tag("#{name}_packaged", options)
