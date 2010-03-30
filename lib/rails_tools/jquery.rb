@@ -3,7 +3,7 @@ module RailsTools
     extend self
 
     def update(options = {})
-      File.open(File.join(options[:to], "jquery-latest.min.js"), "w+") do |f|
+      File.open(File.join(options[:to], "jquery.js"), "w+") do |f|
         f << open("http://code.jquery.com/jquery-latest.min.js").read
       end
     end
