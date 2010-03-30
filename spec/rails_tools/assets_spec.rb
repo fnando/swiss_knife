@@ -30,6 +30,18 @@ describe RailsTools::Assets do
       File.should be_file(@assets_dir.join("javascripts", "libs_packaged.js"))
     end
 
+    it "should ignore missing javascript section" do
+      YAML.stub!(:load_file).and_return({})
+
+      lambda { RailsTools::Assets.export(:javascripts) }.should_not raise_error
+    end
+
+    it "should ignore missing stylesheet section" do
+      YAML.stub!(:load_file).and_return({})
+
+      lambda { RailsTools::Assets.export(:stylesheets) }.should_not raise_error
+    end
+
     it "should merge javascript files in the right order" do
       RailsTools::Assets::export(:javascripts)
       source = File.read(@assets_dir.join("javascripts", "base_packaged.js"))

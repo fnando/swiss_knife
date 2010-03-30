@@ -29,8 +29,11 @@ module RailsTools
     def self.export(type)
       assets_dir = public_dir.join(type.to_s)
       ext = EXTENSIONS[type]
+      group = config[type.to_s]
 
-      config[type.to_s].each do |name, files|
+      return unless group
+
+      group.each do |name, files|
         File.open(assets_dir.join("#{name}_packaged.#{ext}"), "w+") do |f|
           files.each do |file|
             file << ".#{ext}" unless file =~ /\.#{ext}$/i
