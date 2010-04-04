@@ -35,7 +35,8 @@ module RailsTools
 
       options[:class] << (" " + options.delete(:append_class).to_s) if options[:append_class]
 
-      concat safe_html(content_tag(:body, capture(&block), options))
+      html = safe_html(content_tag(:body, capture(&block), options))
+      Rails.version < "3.0" ? concat(html) : html
     end
 
     def page(options = {}, &block)
@@ -59,7 +60,8 @@ module RailsTools
     end
 
     def wrapper(options = {}, &block)
-      concat safe_html(content_tag(:div, capture(&block), options))
+      html = safe_html(content_tag(:div, capture(&block), options))
+      Rails.version < "3.0" ? concat(html) : html
     end
 
     def mail_to(email, label = nil)

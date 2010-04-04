@@ -31,17 +31,22 @@ If you're using <http://github.com/fnando/rails-js>, this helper will create the
 
 Create the `body` tag setting some attributes:
 
-	<% body do %>
+	<%= body do %>
 	<% end %>
 
 Will be converted to
 
-	<body id="sample-page" class="sample-index">
+	<body id="sample-page" class="sample-index en">
 	</body>
 
 Set any attribute by providing a hash:
 
-	<% body :id => "foo", :class => "bar", :onload => "init();" do %>
+	<%= body :id => "foo", :class => "bar", :onload => "init();" do %>
+	<% end %>
+
+If you just want to append more classes, use the options `:append_class`:
+
+	<%= body :append_class => do %>
 	<% end %>
 
 ### page title
@@ -83,17 +88,17 @@ and the helper will output
 
 Just hiding some HTML.
 
-	<% main do %>
+	<%= main do %>
 		<!-- Wrap the content into a div#main tag -->
 	<% end %>
 
-	<% sidebar do %>
+	<%= sidebar do %>
 		<!-- Wrap the content into a div#sidebar tag -->
 	<% end %>
 
-There's also `header` and `footer` wrappers. You can set other attributes, like CSS classes:
+There's also `page`, `header` and `footer` wrappers. You can set other attributes, like CSS classes:
 
-	<% main :class => "rounded" do %>
+	<%= main :class => "rounded" do %>
 	<% end %>
 
 ### Assets (JavaScripts & Stylesheets)
