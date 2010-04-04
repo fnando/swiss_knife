@@ -38,6 +38,10 @@ module RailsTools
       concat safe_html(content_tag(:body, capture(&block), options))
     end
 
+    def page(options = {}, &block)
+      wrapper(options.merge(:id => "page"), &block)
+    end
+
     def main(options = {}, &block)
       wrapper(options.merge(:id => "main"), &block)
     end

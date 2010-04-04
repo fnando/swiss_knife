@@ -82,6 +82,10 @@ describe RailsTools::Helper, :type => :helper do
       helper.main { "Main" }.should have_tag("div#main", "Main")
     end
 
+    it "should wrap content into page div" do
+      helper.page { "Page" }.should have_tag("div#page", "Page")
+    end
+
     it "should wrap content into sidebar div" do
       helper.sidebar { "Sidebar" }.should have_tag("div#sidebar", "Sidebar")
     end
