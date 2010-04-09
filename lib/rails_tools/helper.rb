@@ -117,6 +117,19 @@ module RailsTools
       safe_html(html)
     end
 
+    def fieldset(legend, options = {}, &block)
+      legend = t(legend, :default => legend.to_s)
+
+      html = content_tag(:fieldset, options) do
+        body = content_tag(:legend, legend)
+        body << yield.to_s
+        body
+      end
+
+      html = safe_html(html)
+      Rails.version < "3.0" ? concat(html) : html
+    end
+
     def safe_html(html)
       if html.respond_to?(:html_safe)
         html.html_safe

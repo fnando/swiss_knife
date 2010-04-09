@@ -123,6 +123,14 @@ To merge files, you have to run a rake task:
 
 	$ rake assets:merge
 
+### Fieldset
+
+A fieldset helper with I18n support.
+
+  <%= fieldset "labels.user.create" do %>
+	<!-- Some html -->
+  <% end %>
+
 To-Do
 -----
 

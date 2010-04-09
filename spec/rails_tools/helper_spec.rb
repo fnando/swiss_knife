@@ -2,6 +2,7 @@ require "spec_helper"
 
 describe RailsTools::Helper, :type => :helper do
   before do
+    I18n.locale = :en
     @controller = helper.send(:controller)
     @controller.stub!(:controller_name => "sample", :action_name => "index")
     helper.stub!(:controller).and_return(@controller)
@@ -201,6 +202,32 @@ describe RailsTools::Helper, :type => :helper do
 
       html.should have_tag("link[rel='stylesheet']", :count => 1)
       html.should match(%r{/stylesheets/base_packaged.css(\?\d+)?})
+    end
+  end
+
+  describe "fieldset" do
+    before do
+      @html = helper.fieldset("Nice legend", :class => "sample") { "<p>Fieldset</p>" }
+    end
+
+    it "should use provided options" do
+      @html.should have_tag("fieldset.sample", :count => 1)
+    end
+
+    it "should use legend as text" do
+      @html.should have_tag("fieldset > legend", "Nice legend")
+    end
+
+    it "should use translated legend" do
+      I18n.locale = :pt
+      I18n.backend.should_receive(:translations).and_return(:pt => {:sample => "Legenda"})
+
+      @html = helper.fieldset("sample") {}
+      @html.should have_tag("fieldset > legend", "Legenda")
+    end
+
+    it "should return content" do
+      @html.should have_tag("fieldset > p", "Fieldset")
     end
   end
 end
