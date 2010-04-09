@@ -36,7 +36,7 @@ module RailsTools
 
           controller_name = controller.controller_name
           action_name = controller.action_name
-          action_name_alias = aliases[action_name] || "___invalid___"
+          action_name_alias = aliases[action_name] || action_name
           options = (@page_title_options || {}).merge(:raise => true)
 
           # First, let's check if there's a action title without the alias
@@ -56,8 +56,9 @@ module RailsTools
       #
       #   set_page_title "My page title"
       #   set_page_title nil, :name => user.name
-      def set_page_title(title, options = {})
-        @page_title = title
+      def set_page_title(*args)
+        options = args.extract_options!
+        @page_title = args.first
         @page_title_options = options
       end
     end

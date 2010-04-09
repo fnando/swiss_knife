@@ -28,7 +28,7 @@ describe RailsTools::ActionController, :type => :controller do
     it "should use scoped title with interpolation" do
       translations :show => "{{name}}'s page"
       controller.stub!(:action_name).and_return("show")
-      controller.send(:set_page_title, nil, :name => "John")
+      controller.send(:set_page_title, :name => "John")
 
       controller.send(:page_title).should == "John's page"
     end
