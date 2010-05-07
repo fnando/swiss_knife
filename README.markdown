@@ -23,9 +23,9 @@ For production, you can use the rake task `rake less:generate`.
 
 ### dispatcher tag
 
-If you're using <http://github.com/fnando/rails-js>, this helper will create the meta tags.
+If you're using <http://github.com/fnando/dispatcher-js>, this helper will create the meta tags.
 
-	<%= rails_meta_tags %>
+	<%= dispatcher_tag %>
 
 ### body
 
