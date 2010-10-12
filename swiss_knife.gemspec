@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{swiss_knife}
-  s.version = "0.1.0"
+  s.version = "0.1.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Nando Vieira"]
@@ -61,7 +61,8 @@ Gem::Specification.new do |s|
      "spec/swiss_knife/i18n_js_spec.rb",
      "spec/swiss_knife/jquery_spec.rb",
      "spec/swiss_knife/jquery_ujs_spec.rb",
-     "spec/swiss_knife/modernizr_spec.rb"
+     "spec/swiss_knife/modernizr_spec.rb",
+     "swiss_knife.gemspec"
   ]
   s.homepage = %q{http://github.com/fnando/swiss_knife}
   s.rdoc_options = ["--charset=UTF-8"]
