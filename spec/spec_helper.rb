@@ -1,38 +1,25 @@
-# Load application RSpec helper
-begin
-  require File.dirname(__FILE__) + "/../../../../spec/spec_helper"
-rescue LoadError
-  puts "Your application hasn't been bootstraped with RSpec.\nI'll do it on my own!\n\n"
-  system "cd '#{File.dirname(__FILE__) + "/../../../../"}' && script/generate rspec"
-  puts "\n\nRun `rake spec` again."
-  exit
-end
+ENV["RAILS_ENV"] = "test"
+require "rails"
+require "swiss_knife"
+require File.dirname(__FILE__) + "/support/config/boot"
+require "rspec/rails"
+require "swiss_knife/rspec"
 
-# Establish connection with in memory SQLite 3 database
-ActiveRecord::Base.establish_connection :adapter => "sqlite3", :database => ":memory:"
+# Load support files
+Dir[File.dirname(__FILE__) + "/support/rspec/**/*.rb"].each {|file| require file}
 
-# Set locale
-I18n.locale = :en
-
-# Load database schema
-load File.dirname(__FILE__) + "/schema.rb"
-
-# Create an alias for lambda
-alias :doing :lambda
-
-# Forge http://github.com/fnando/i18n-js
-module SimplesIdeias
-  module I18n
-    extend self
-
-    def export!
-    end
+# Restore default configuration
+RSpec.configure do |config|
+  remove_file = proc do |file|
+    File.unlink(file)
   end
-end
 
-Spec::Runner.configure do |config|
-  config.before(:each) do
-    `rm -rf #{File.dirname(__FILE__) + "/tmp"}`
-    `mkdir #{File.dirname(__FILE__) + "/tmp"}`
+  remote_static_files = proc do
+    Dir[Rails.root.join("public/javascripts/*.js")].each(&remove_file)
+    Dir[Rails.root.join("public/stylesheets/*.css")].each(&remove_file)
+    Dir[File.dirname(__FILE__) + "/resources/**/*_packaged.**"].each(&remove_file)
   end
+
+  config.before(&remote_static_files)
+  config.after(&remote_static_files)
 end

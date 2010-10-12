@@ -1,1 +1,1 @@
-name: jquery
+var name = "jquery";

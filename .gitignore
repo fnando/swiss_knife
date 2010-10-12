@@ -1,2 +1,5 @@
-spec/tmp
-*_packaged.*
+tmp/**/*
+pkg
+.DS_Store
+spec/support/public/javascripts/*.js
+spec/support/public/stylesheets/*.css

@@ -1,1 +1,1 @@
-name: application
+var name = "application";

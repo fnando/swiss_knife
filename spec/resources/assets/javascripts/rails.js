@@ -1,1 +1,1 @@
-name: rails
+var name = "rails";

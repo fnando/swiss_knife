@@ -1,0 +1,7 @@
+en:
+  titles:
+    products:
+      index: "All products"
+      new: "Add a new product"
+      edit: "Editing %{name}"
+      destroy: "Remove %{name}"
