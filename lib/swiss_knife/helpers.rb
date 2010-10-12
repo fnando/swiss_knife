@@ -132,16 +132,17 @@ module SwissKnife
         bundle = SwissKnife::Assets.config["javascripts"][name.to_s] rescue nil
 
         if SwissKnife::Assets.merge? && bundle
-          html << javascript_include_tag("#{name}_packaged", options)
+          html << javascript_include_tag("#{name}_packaged".html_safe, options)
         elsif bundle
           bundle.each do |file|
-            html << javascript_include_tag("#{file}", options)
+            html << javascript_include_tag(file.to_s.html_safe, options)
           end
         else
-          html << javascript_include_tag("#{name}", options)
+          html << javascript_include_tag(name.to_s.html_safe, options)
         end
       end
-      html
+
+      html.html_safe
     end
 
     def stylesheet_includes(*args)
@@ -162,7 +163,7 @@ module SwissKnife
         end
       end
 
-      html
+      html.html_safe
     end
 
     def fieldset(legend, options = {}, &block)

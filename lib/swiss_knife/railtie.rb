@@ -10,10 +10,12 @@ module SwissKnife
       require "swiss_knife/rake_tasks"
     end
 
-    initializer "swiss_knife.initialize" do |app|
-      ApplicationController.send :include, SwissKnife::ActionController
-      ApplicationController.helper SwissKnife::Helpers
-      ApplicationController.helper_method :page_title
+    config.after_initialize do
+      ActiveSupport.on_load(:action_controller) do
+        include SwissKnife::ActionController
+        helper SwissKnife::Helpers
+        helper_method :page_title
+      end
     end
   end
 end
