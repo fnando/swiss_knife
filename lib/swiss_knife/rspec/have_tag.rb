@@ -55,6 +55,10 @@ module SwissKnife
           !matches.empty?
         end
 
+        def description
+          "have tag #{selector.inspect} with #{options.inspect}"
+        end
+
         def failure_message
           explanation = actual_count ? "but found #{actual_count}" : "but did not"
           "expected\n#{doc.to_s}\nto have #{failure_count_phrase} #{failure_selector_phrase}, #{explanation}"

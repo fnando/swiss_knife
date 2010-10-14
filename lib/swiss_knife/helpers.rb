@@ -57,7 +57,7 @@ module SwissKnife
         flash.discard(name)
       end
 
-      html
+      html.html_safe
     end
 
     def dispatcher_tag
@@ -174,6 +174,24 @@ module SwissKnife
         body << yield.to_s.html_safe
         body
       end
+    end
+
+    # Create a submit button with a cancel link besides.
+    #
+    #   submit_or_cancel root_path
+    #   submit_or_cancel root_path, :button => "Save"
+    #   submit_or_cancel root_path, :button => :"some.scope.for.button"
+    #   submit_or_cancel root_path, :cancel => "Go back"
+    #   submit_or_cancel root_path, :cancel => :"some.scope.for.link"
+    #
+    def submit_or_cancel(url, options = {})
+      options.reverse_merge!(:button => :"swiss_knife.submit", :cancel => :"swiss_knife.cancel")
+
+      String.new.tap do |html|
+        html << submit_tag(t(options[:button], :default => options[:button]), :class => "button")
+        html << " "
+        html << link_to(t(options[:cancel], :default => options[:cancel]), url, :class => "cancel")
+      end.html_safe
     end
   end
 end

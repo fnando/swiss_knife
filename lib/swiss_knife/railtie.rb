@@ -10,12 +10,14 @@ module SwissKnife
       require "swiss_knife/rake_tasks"
     end
 
-    config.after_initialize do
-      ActiveSupport.on_load(:action_controller) do
+    initializer "swiss_knife.initialize" do
+      ::ActionController::Base.instance_eval do
         include SwissKnife::ActionController
         helper SwissKnife::Helpers
         helper_method :page_title
       end
+
+      ::I18n.load_path += Dir[File.dirname(__FILE__) + "/../../locales/*.yml"]
     end
   end
 end

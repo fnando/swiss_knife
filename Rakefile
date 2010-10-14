@@ -17,7 +17,7 @@ begin
     gem.has_rdoc = true
     gem.add_dependency "rails", ">= 3.0.0"
     gem.add_development_dependency "rspec", ">= 2.0.0"
-    gem.files = FileList["{Gemfile,Gemfile.lock,Rakefile,README.*,swiss_knife.gemspec}", "{spec,lib}/**/*"]
+    gem.files = FileList["{Gemfile,Gemfile.lock,Rakefile,README.*,swiss_knife.gemspec}", "{spec,lib,locales}/**/*"]
   end
 
   Jeweler::GemcutterTasks.new

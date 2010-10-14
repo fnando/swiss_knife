@@ -118,6 +118,30 @@ The are some action aliases:
   update => edit
   remove => destroy
 
+=== gravatar_tag
+
+  gravatar_tag user.email
+  gravatar_tag "098f6bcd4621d373cade4e832627b4f6"
+  gravatar_tag user.email, :size => 80
+  gravatar_tag user.email, :rating => :x
+
+  # Predefined default images provided by Gravatar. Can be
+  # :mm, :identicon, :monsterid, :wavatar, :retro, 404
+  gravatar_tag user.email, :default => :mm
+
+  gravatar_tag user.email, :default => "gravatar.png"
+  gravatar_tag user.email, :ssl => true
+  gravatar_tag user.email, :alt => user.name
+  gravatar_tag user.email, :title => user.name
+
+=== submit_or_cancel
+
+  submit_or_cancel root_path
+  submit_or_cancel root_path :button => "Save"
+  submit_or_cancel root_path :button => :"some.scope.for.save"
+  submit_or_cancel root_path :cancel => "Go back"
+  submit_or_cancel root_path :cancel => :"some.scope.for.go_back"
+
 === RSpec
 
 Swiss Knife includes some RSpec matchers. To use them, add the following like to your <tt>spec_helper.rb</tt> file:
@@ -139,21 +163,10 @@ The <tt>have_tag</tt> matcher uses Nokogiri, so you can use any CSS selector acc
 
 If you're inspecting some XML snippet, you can use the <tt>have_node</tt> matcher.
 
-=== gravatar_tag
+==== have_text
 
-  gravatar_tag user.email
-  gravatar_tag "098f6bcd4621d373cade4e832627b4f6"
-  gravatar_tag user.email, :size => 80
-  gravatar_tag user.email, :rating => :x
-
-  # Predefined default images provided by Gravatar. Can be
-  # :mm, :identicon, :monsterid, :wavatar, :retro, 404
-  gravatar_tag user.email, :default => :mm
-
-  gravatar_tag user.email, :default => "gravatar.png"
-  gravatar_tag user.email, :ssl => true
-  gravatar_tag user.email, :alt => user.name
-  gravatar_tag user.email, :title => user.name
+  string.should have_text("Lorem ipsum")
+  string.should have_text(/Lorem ipsum/)
 
 == Maintainer
 

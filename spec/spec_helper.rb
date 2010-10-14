@@ -5,6 +5,8 @@ require File.dirname(__FILE__) + "/support/config/boot"
 require "rspec/rails"
 require "swiss_knife/rspec"
 
+FakeWeb.allow_net_connect = false
+
 # Load support files
 Dir[File.dirname(__FILE__) + "/support/rspec/**/*.rb"].each {|file| require file}
 

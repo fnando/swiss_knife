@@ -299,6 +299,7 @@ describe SwissKnife::Helpers do
       helper.gravatar_tag(@email, :title => "title text").should match(/\btitle="title text"/)
     end
 
+    private
     def uri_for(html)
       html = Nokogiri(html)
       uri = URI.parse(html.css("img.gravatar").first["src"])
@@ -309,6 +310,36 @@ describe SwissKnife::Helpers do
         :host   => uri.host,
         :path   => uri.path
       })
+    end
+  end
+
+  describe "#submit_or_cancel" do
+    it "should use defaults" do
+      html = helper.submit_or_cancel("/some/path")
+      html.should have_tag("a.cancel[href='/some/path']", :text => "Cancel")
+      html.should have_tag("input.button[type=submit][value=Submit]")
+    end
+
+    it "should use custom link text from I18n file" do
+      I18n.backend.stub :translations => {:en => {:go_back => "Go back"}}
+      html = helper.submit_or_cancel("/some/path", :cancel => :go_back)
+      html.should have_tag("a.cancel", :text => "Go back")
+    end
+
+    it "should use custom link text" do
+      html = helper.submit_or_cancel("/some/path", :cancel => "Go back")
+      html.should have_tag("a.cancel", :text => "Go back")
+    end
+
+    it "should use custom button text from I18n file" do
+      I18n.backend.stub :translations => {:en => {:send => "Send"}}
+      html = helper.submit_or_cancel("/some/path", :button => :send)
+      html.should have_tag("input[type=submit][value=Send]")
+    end
+
+    it "should use custom button text" do
+      html = helper.submit_or_cancel("/some/path", :button => "Send")
+      html.should have_tag("input[type=submit][value=Send]")
     end
   end
 end

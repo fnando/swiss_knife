@@ -1,0 +1,8 @@
+pt:
+  swiss_knife: &PT
+    submit: "Submit"
+    cancel: "Cancel"
+
+"pt-BR":
+  swiss_knife:
+    <<: *PT
