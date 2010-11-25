@@ -193,5 +193,28 @@ module SwissKnife
         html << link_to(t(options[:cancel], :default => options[:cancel]), url, :class => "cancel")
       end.html_safe
     end
+
+    # Load jQuery from Google's CDN and if the world is collapsing and Google is down,
+    # load it locally.
+    #
+    #   jquery_script_tag #=> Default to 1.4.4
+    #   jquery_script_tag("1.4.2")
+    #
+    # The local version should be placed at <tt>public/javascripts/jquery-%{version}.min.js</tt>.
+    #
+    def jquery_script_tag(version = "1.4.4")
+      local_path = compute_public_path("jquery-#{version}.min.js", "javascripts")
+      remote_path = "#{request.protocol}ajax.googleapis.com/ajax/libs/jquery/#{version}/jquery.min.js"
+      html = <<-HTML
+  		<script type="text/javascript" src="#{remote_path}"></script>
+  		<script type="text/javascript">
+  			if (typeof jQuery === "undefined") {
+  				document.write(unescape("%3Cscript src='#{local_path}' type='text/javascript'%3E%3C/script%3E"));
+  			};
+  		</script>
+      HTML
+
+      html.html_safe
+    end
   end
 end

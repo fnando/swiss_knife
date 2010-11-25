@@ -1,5 +1,6 @@
 ENV["RAILS_ENV"] = "test"
 require "rails"
+require "ostruct"
 require "swiss_knife"
 require File.dirname(__FILE__) + "/support/config/boot"
 require "rspec/rails"
@@ -12,14 +13,10 @@ Dir[File.dirname(__FILE__) + "/support/rspec/**/*.rb"].each {|file| require file
 
 # Restore default configuration
 RSpec.configure do |config|
-  remove_file = proc do |file|
-    File.unlink(file)
-  end
-
   remote_static_files = proc do
-    Dir[Rails.root.join("public/javascripts/*.js")].each(&remove_file)
-    Dir[Rails.root.join("public/stylesheets/*.css")].each(&remove_file)
-    Dir[File.dirname(__FILE__) + "/resources/**/*_packaged.**"].each(&remove_file)
+    Dir[Rails.root.join("public/javascripts/*.js")].each {|file| File.unlink(file)}
+    Dir[Rails.root.join("public/stylesheets/*.css")].each {|file| File.unlink(file)}
+    Dir[File.dirname(__FILE__) + "/resources/**/*_packaged.**"].each {|file| File.unlink(file)}
   end
 
   config.before(&remote_static_files)

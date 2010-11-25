@@ -342,4 +342,27 @@ describe SwissKnife::Helpers do
       html.should have_tag("input[type=submit][value=Send]")
     end
   end
+
+  describe "#jquery_script_tag" do
+    it "should default to version 1.4.4" do
+      html = helper.jquery_script_tag("1.4.4")
+      html.should have_tag("script[src='http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js']")
+    end
+
+    it "should use specified version" do
+      html = helper.jquery_script_tag("1.2.3")
+      html.should have_tag("script[src='http://ajax.googleapis.com/ajax/libs/jquery/1.2.3/jquery.min.js']")
+    end
+
+    it "should use https protocol" do
+      helper.request.stub :protocol => "https://"
+      html = helper.jquery_script_tag
+      html.should have_tag("script[src='https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js']")
+    end
+
+    it "should set fallback path" do
+      html = helper.jquery_script_tag
+      html.should match(%r[src='http://example.com/javascripts/jquery-1.4.4.min.js'])
+    end
+  end
 end

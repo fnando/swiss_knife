@@ -142,6 +142,15 @@ The are some action aliases:
   submit_or_cancel root_path :cancel => "Go back"
   submit_or_cancel root_path :cancel => :"some.scope.for.go_back"
 
+=== jquery_script_tag
+
+Load jQuery from Google's CDN, with fallback to a local version.
+
+  jquery_script_tag #=> Default to 1.4.4
+  jquery_script_tag("1.4.2")
+
+The local version should be placed at <tt>public/javascripts/jquery-%{version}.min.js</tt>.
+
 === RSpec
 
 Swiss Knife includes some RSpec matchers. To use them, add the following like to your <tt>spec_helper.rb</tt> file:
