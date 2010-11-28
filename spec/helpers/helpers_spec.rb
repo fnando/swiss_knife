@@ -17,6 +17,8 @@ describe SwissKnife::Helpers do
 
     subject { helper.flash_messages }
 
+    it { should be_html_safe }
+
     it "should render multiple flash messages" do
       subject.should have_tag("p.message", :count => 3)
     end
@@ -36,41 +38,47 @@ describe SwissKnife::Helpers do
 
   describe "block wrappers" do
     context "body" do
-      it "should use defaults" do
-        html = helper.body { "Body" }
+      subject { helper.body { "Body" } }
 
-        html.should have_tag("body", :count => 1)
-        html.should have_tag("body#sample-page")
-        html.should have_tag("body.sample-index")
-        html.should have_tag("body.en")
+      it { should be_html_safe }
+
+      it "should use defaults" do
+        subject.should have_tag("body", :count => 1)
+        subject.should have_tag("body#sample-page")
+        subject.should have_tag("body.sample-index")
+        subject.should have_tag("body.en")
       end
 
-      it "should use alias for action" do
+      it "should use alias for create action" do
         @controller.stub(:action_name => "create")
         helper.body { "Body" }.should have_tag("body.sample-new")
+      end
 
+      it "should use alias for update action" do
         @controller.stub(:action_name => "update")
         helper.body { "Body" }.should have_tag("body.sample-edit")
+      end
 
+      it "should use alias for delete action" do
         @controller.stub(:action_name => "destroy")
         helper.body { "Body" }.should have_tag("body.sample-destroy")
       end
 
       it "should use custom settings" do
-        html = helper.body(:id => "page", :class => "dark", :onload => "init();") { "Body" }
+        subject = helper.body(:id => "page", :class => "dark", :onload => "init();") { "Body" }
 
-        html.should have_tag("body#page")
-        html.should have_tag("body.dark")
-        html.should have_tag("body[onload='init();']")
+        subject.should have_tag("body#page")
+        subject.should have_tag("body.dark")
+        subject.should have_tag("body[onload='init();']")
       end
 
       it "should append classes" do
-        html = helper.body(:append_class => "more classes") { "Body" }
+        subject = helper.body(:append_class => "more classes") { "Body" }
 
-        html.should have_tag("body.more")
-        html.should have_tag("body.classes")
-        html.should have_tag("body.en")
-        html.should have_tag("body.sample-index")
+        subject.should have_tag("body.more")
+        subject.should have_tag("body.classes")
+        subject.should have_tag("body.en")
+        subject.should have_tag("body.sample-index")
       end
 
       it "should not have append_class attribute" do
@@ -107,18 +115,22 @@ describe SwissKnife::Helpers do
     end
 
     it "should use other options like css class" do
-      html = helper.wrapper(:div, :id => "container", :class => "rounded") { "Some content" }
-      html.should have_tag("div#container.rounded", "Some content")
+      subject = helper.wrapper(:div, :id => "container", :class => "rounded") { "Some content" }
+      subject.should have_tag("div#container.rounded", "Some content")
     end
   end
 
   describe "#dispatcher_tag" do
+    it "should be html safe" do
+      helper.dispatcher_tag.should be_html_safe
+    end
+
     it "should contain meta tag" do
       @controller.class.stub!(:name).and_return("SampleController")
 
-      html = helper.dispatcher_tag
-      html.should have_tag("meta")
-      html.should have_tag("meta[name=page][content='sample#index']")
+      subject = helper.dispatcher_tag
+      subject.should have_tag("meta")
+      subject.should have_tag("meta[name=page][content='sample#index']")
     end
 
     it "should return normalized controller name for namespaced controller" do
@@ -129,6 +141,8 @@ describe SwissKnife::Helpers do
 
   describe "#mail_to" do
     subject { helper.mail_to("john@doe.com") }
+
+    it { should be_html_safe }
 
     it "should be encrypted" do
       subject.should_not match(/john@doe\.com/)
@@ -152,99 +166,101 @@ describe SwissKnife::Helpers do
 
     describe "javascript includes" do
       it "should use defaults" do
-        html = helper.javascript_includes("application")
+        subject = helper.javascript_includes("application")
 
-        html.should have_tag("script[type='text/javascript']", :count => 1)
-        html.should match(%r{/javascripts/application.js(\?\d+)?})
+        subject.should have_tag("script[type='text/javascript']", :count => 1)
+        subject.should match(%r{/javascripts/application.js(\?\d+)?})
       end
 
       it "should return several includes for bundle when not in production" do
         SwissKnife::Assets.stub(:merge? => false)
-        html = helper.javascript_includes(:base)
+        subject = helper.javascript_includes(:base)
 
-        html.should have_tag("script[type='text/javascript']", :count => 3)
-        html.should match(%r{/javascripts/application.js(\?\d+)?})
-        html.should match(%r{/javascripts/jquery.js(\?\d+)?})
-        html.should match(%r{/javascripts/rails.js(\?\d+)?})
+        subject.should have_tag("script[type='text/javascript']", :count => 3)
+        subject.should match(%r{/javascripts/application.js(\?\d+)?})
+        subject.should match(%r{/javascripts/jquery.js(\?\d+)?})
+        subject.should match(%r{/javascripts/rails.js(\?\d+)?})
       end
 
       it "should return bundle only when in production" do
         SwissKnife::Assets.stub(:merge? => true)
-        html = helper.javascript_includes(:base)
+        subject = helper.javascript_includes(:base)
 
-        html.should have_tag("script[type='text/javascript']", :count => 1)
-        html.should match(%r{/javascripts/base_packaged.js(\?\d+)?})
+        subject.should have_tag("script[type='text/javascript']", :count => 1)
+        subject.should match(%r{/javascripts/base_packaged.js(\?\d+)?})
       end
     end
 
     describe "stylesheet includes" do
       it "should use defaults" do
-        html = helper.stylesheet_includes("application")
+        subject = helper.stylesheet_includes("application")
 
-        html.should have_tag("link[rel='stylesheet']", :count => 1)
-        html.should match(%r{/stylesheets/application.css(\?\d+)?})
+        subject.should have_tag("link[rel='stylesheet']", :count => 1)
+        subject.should match(%r{/stylesheets/application.css(\?\d+)?})
       end
 
       it "should return several includes for bundle when not in production" do
         SwissKnife::Assets.stub(:merge? => false)
-        html = helper.stylesheet_includes(:base)
+        subject = helper.stylesheet_includes(:base)
 
-        html.should have_tag("link[rel='stylesheet']", :count => 2)
-        html.should match(%r{/stylesheets/reset.css(\?\d+)?})
-        html.should match(%r{/stylesheets/main.css(\?\d+)?})
+        subject.should have_tag("link[rel='stylesheet']", :count => 2)
+        subject.should match(%r{/stylesheets/reset.css(\?\d+)?})
+        subject.should match(%r{/stylesheets/main.css(\?\d+)?})
       end
 
       it "should return only bundle when in production" do
         SwissKnife::Assets.stub(:merge? => true)
-        html = helper.stylesheet_includes(:base)
+        subject = helper.stylesheet_includes(:base)
 
-        html.should have_tag("link[rel='stylesheet']", :count => 1)
-        html.should match(%r{/stylesheets/base_packaged.css(\?\d+)?})
+        subject.should have_tag("link[rel='stylesheet']", :count => 1)
+        subject.should match(%r{/stylesheets/base_packaged.css(\?\d+)?})
       end
     end
   end
 
   describe "#fieldset" do
-    before do
-      @html = helper.fieldset("Nice legend", :class => "sample") { "<p>Fieldset</p>" }
-    end
+    subject { helper.fieldset("Nice legend", :class => "sample") { "<p>Fieldset</p>" } }
+
+    it { should be_html_safe }
 
     it "should use provided options" do
-      @html.should have_tag("fieldset.sample", :count => 1)
+      subject.should have_tag("fieldset.sample", :count => 1)
     end
 
     it "should use legend as text" do
-      @html.should have_tag("fieldset > legend", "Nice legend")
+      subject.should have_tag("fieldset > legend", "Nice legend")
     end
 
     it "should use translated legend" do
       I18n.locale = :pt
       I18n.backend.should_receive(:translations).and_return(:pt => {:sample => "Legenda"})
 
-      @html = helper.fieldset("sample") {}
-      @html.should have_tag("fieldset > legend", "Legenda")
+      subject = helper.fieldset("sample") {}
+      subject.should have_tag("fieldset > legend", "Legenda")
     end
 
     it "should return content" do
-      @html.should have_tag("fieldset > p", "Fieldset")
+      subject.should have_tag("fieldset > p", "Fieldset")
     end
   end
 
   describe "#gravatar_tag" do
     before do
       ActionController::Base.asset_host = "http://example.com"
-      @email = "john@doe.com"
     end
 
+    let(:email) { "john@doe.com" }
+    subject { helper.gravatar_tag(email) }
+
     it "should return an image" do
-      helper.gravatar_tag(@email).should have_tag("img.gravatar", :count => 1)
+      subject.should have_tag("img.gravatar", :count => 1)
     end
 
     it "should use default options" do
-      uri = uri_for(helper.gravatar_tag(@email))
+      uri = uri_for(subject)
       uri.scheme.should == "http"
       uri.host.should == "www.gravatar.com"
-      uri.path.should == "/avatar/#{Digest::MD5.hexdigest(@email)}.jpg"
+      uri.path.should == "/avatar/#{Digest::MD5.hexdigest(email)}.jpg"
       uri.params.should == {"s" => "32", "r" => "g", "d" => "http://example.com/images/gravatar.jpg"}
     end
 
@@ -254,49 +270,49 @@ describe SwissKnife::Helpers do
     end
 
     it "should use custom default image" do
-      uri = uri_for(helper.gravatar_tag(@email, :default => "custom.jpg"))
+      uri = uri_for(helper.gravatar_tag(email, :default => "custom.jpg"))
       uri.params["d"].should == "http://example.com/images/custom.jpg"
     end
 
     it "should use custom default image" do
-      uri = uri_for(helper.gravatar_tag(@email, :default => "custom.jpg"))
+      uri = uri_for(helper.gravatar_tag(email, :default => "custom.jpg"))
       uri.params["d"].should == "http://example.com/images/custom.jpg"
     end
 
     it "should use predefined default image" do
-      uri = uri_for(helper.gravatar_tag(@email, :default => :mm))
+      uri = uri_for(helper.gravatar_tag(email, :default => :mm))
       uri.params["d"].should == "mm"
     end
 
     it "should use custom size" do
-      uri = uri_for(helper.gravatar_tag(@email, :size => 80))
+      uri = uri_for(helper.gravatar_tag(email, :size => 80))
       uri.params["s"].should == "80"
     end
 
     it "should use custom rating" do
-      uri = uri_for(helper.gravatar_tag(@email, :rating => "pg"))
+      uri = uri_for(helper.gravatar_tag(email, :rating => "pg"))
       uri.params["r"].should == "pg"
     end
 
     it "should use secure host when in a secure request" do
       helper.request.should_receive(:ssl?).and_return(true)
-      uri = uri_for(helper.gravatar_tag(@email))
+      uri = uri_for(helper.gravatar_tag(email))
       uri.host.should == "secure.gravatar.com"
       uri.scheme.should == "https"
     end
 
     it "should use secure host when using :ssl option" do
-      uri = uri_for(helper.gravatar_tag(@email, :ssl => true))
+      uri = uri_for(helper.gravatar_tag(email, :ssl => true))
       uri.host.should == "secure.gravatar.com"
       uri.scheme.should == "https"
     end
 
     it "should use alt" do
-      helper.gravatar_tag(@email, :alt => "alt text").should match(/\balt="alt text"/)
+      helper.gravatar_tag(email, :alt => "alt text").should match(/\balt="alt text"/)
     end
 
     it "should use title" do
-      helper.gravatar_tag(@email, :title => "title text").should match(/\btitle="title text"/)
+      helper.gravatar_tag(email, :title => "title text").should match(/\btitle="title text"/)
     end
 
     private
@@ -315,54 +331,56 @@ describe SwissKnife::Helpers do
 
   describe "#submit_or_cancel" do
     it "should use defaults" do
-      html = helper.submit_or_cancel("/some/path")
-      html.should have_tag("a.cancel[href='/some/path']", :text => "Cancel")
-      html.should have_tag("input.button[type=submit][value=Submit]")
+      subject = helper.submit_or_cancel("/some/path")
+      subject.should have_tag("a.cancel[href='/some/path']", :text => "Cancel")
+      subject.should have_tag("input.button[type=submit][value=Submit]")
     end
 
     it "should use custom link text from I18n file" do
       I18n.backend.stub :translations => {:en => {:go_back => "Go back"}}
-      html = helper.submit_or_cancel("/some/path", :cancel => :go_back)
-      html.should have_tag("a.cancel", :text => "Go back")
+      subject = helper.submit_or_cancel("/some/path", :cancel => :go_back)
+      subject.should have_tag("a.cancel", :text => "Go back")
     end
 
     it "should use custom link text" do
-      html = helper.submit_or_cancel("/some/path", :cancel => "Go back")
-      html.should have_tag("a.cancel", :text => "Go back")
+      subject = helper.submit_or_cancel("/some/path", :cancel => "Go back")
+      subject.should have_tag("a.cancel", :text => "Go back")
     end
 
     it "should use custom button text from I18n file" do
       I18n.backend.stub :translations => {:en => {:send => "Send"}}
-      html = helper.submit_or_cancel("/some/path", :button => :send)
-      html.should have_tag("input[type=submit][value=Send]")
+      subject = helper.submit_or_cancel("/some/path", :button => :send)
+      subject.should have_tag("input[type=submit][value=Send]")
     end
 
     it "should use custom button text" do
-      html = helper.submit_or_cancel("/some/path", :button => "Send")
-      html.should have_tag("input[type=submit][value=Send]")
+      subject = helper.submit_or_cancel("/some/path", :button => "Send")
+      subject.should have_tag("input[type=submit][value=Send]")
     end
   end
 
   describe "#jquery_script_tag" do
+    subject { helper.jquery_script_tag }
+
+    it { should be_html_safe }
+
     it "should default to version 1.4.4" do
-      html = helper.jquery_script_tag("1.4.4")
-      html.should have_tag("script[src='http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js']")
+      subject.should have_tag("script[src='http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js']")
     end
 
     it "should use specified version" do
-      html = helper.jquery_script_tag("1.2.3")
-      html.should have_tag("script[src='http://ajax.googleapis.com/ajax/libs/jquery/1.2.3/jquery.min.js']")
+      subject = helper.jquery_script_tag("1.2.3")
+      subject.should have_tag("script[src='http://ajax.googleapis.com/ajax/libs/jquery/1.2.3/jquery.min.js']")
     end
 
     it "should use https protocol" do
       helper.request.stub :protocol => "https://"
-      html = helper.jquery_script_tag
-      html.should have_tag("script[src='https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js']")
+      subject = helper.jquery_script_tag
+      subject.should have_tag("script[src='https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js']")
     end
 
     it "should set fallback path" do
-      html = helper.jquery_script_tag
-      html.should match(%r[src='http://example.com/javascripts/jquery-1.4.4.min.js'])
+      subject.should match(%r[src='http://example.com/javascripts/jquery-1.4.4.min.js'])
     end
   end
 end
