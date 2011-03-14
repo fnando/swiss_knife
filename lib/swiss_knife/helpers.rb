@@ -93,7 +93,11 @@ module SwissKnife
 
       options = {
         :id => "#{controller.controller_name}-page",
-        :class => "#{controller.controller_name}-#{action_name} #{I18n.locale}"
+        :class => [
+          "#{controller.controller_name}-#{action_name}",
+          "#{controller.controller_name}-#{controller.action_name}",
+          I18n.locale
+        ].join(" ")
       }.merge(options)
 
       options[:class] << (" " + options.delete(:append_class).to_s) if options[:append_class]

@@ -5,6 +5,8 @@ require "swiss_knife"
 require File.dirname(__FILE__) + "/support/config/boot"
 require "rspec/rails"
 require "swiss_knife/rspec"
+require "fakeweb"
+require "nokogiri"
 
 FakeWeb.allow_net_connect = false
 

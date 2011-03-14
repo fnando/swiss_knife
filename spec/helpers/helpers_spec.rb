@@ -51,7 +51,10 @@ describe SwissKnife::Helpers do
 
       it "should use alias for create action" do
         @controller.stub(:action_name => "create")
-        helper.body { "Body" }.should have_tag("body.sample-new")
+        html = helper.body { "Body" }
+
+        html.should have_tag("body.sample-new")
+        html.should have_tag("body.sample-create")
       end
 
       it "should use alias for update action" do
