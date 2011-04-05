@@ -13,7 +13,7 @@ module SwissKnife
         attr_reader :options, :selector, :actual, :actual_count, :doc, :type
 
         def initialize(type, selector, options = {}, &block)
-          @selector = selector
+          @selector = selector.to_s
           @type = type
 
           case options
