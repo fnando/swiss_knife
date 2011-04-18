@@ -13,14 +13,14 @@ FakeWeb.allow_net_connect = false
 # Load support files
 Dir[File.dirname(__FILE__) + "/support/rspec/**/*.rb"].each {|file| require file}
 
+# Load database schema
+load File.dirname(__FILE__) + "/schema.rb"
+
 # Restore default configuration
 RSpec.configure do |config|
-  remote_static_files = proc do
+  config.around do
     Dir[Rails.root.join("public/javascripts/*.js")].each {|file| File.unlink(file)}
     Dir[Rails.root.join("public/stylesheets/*.css")].each {|file| File.unlink(file)}
     Dir[File.dirname(__FILE__) + "/resources/**/*_packaged.**"].each {|file| File.unlink(file)}
   end
-
-  config.before(&remote_static_files)
-  config.after(&remote_static_files)
 end

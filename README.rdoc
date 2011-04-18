@@ -177,6 +177,11 @@ If you're inspecting some XML snippet, you can use the <tt>have_node</tt> matche
   string.should have_text("Lorem ipsum")
   string.should have_text(/Lorem ipsum/)
 
+==== allow
+
+  record.should allow("john@doe.com").as(:email)
+  record.should_not allow(nil, "").as(:email)
+
 == Maintainer
 
 * Nando Vieira (<http://simplesideias.com.br>)

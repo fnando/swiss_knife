@@ -11,7 +11,6 @@ Gem::Specification.new do |s|
   s.homepage    = "http://rubygems.org/gems/swiss_knife"
   s.summary     = "Several helpers for Rails 3"
   s.description = s.summary
-  s.has_rdoc    = true
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
@@ -22,4 +21,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rspec-rails", "~> 2.5.0"
   s.add_development_dependency "nokogiri"
   s.add_development_dependency "fakeweb"
+  s.add_development_dependency "sqlite3"
 end

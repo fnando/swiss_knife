@@ -2,11 +2,11 @@ ENV["BUNDLE_GEMFILE"] = File.expand_path(File.dirname(__FILE__) + "/../../../Gem
 require "bundler"
 Bundler.setup
 
-# require "active_record/railtie"
+require "active_record/railtie"
 require "action_controller/railtie"
-require "action_mailer/railtie"
-require "active_resource/railtie"
-require "rails/test_unit/railtie"
+# require "action_mailer/railtie"
+# require "active_resource/railtie"
+# require "rails/test_unit/railtie"
 
 Bundler.require(:default)
 
