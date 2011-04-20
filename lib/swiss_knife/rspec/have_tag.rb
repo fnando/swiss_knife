@@ -81,7 +81,7 @@ module SwissKnife
           elements.select do |el|
             begin
               block.call(el)
-            rescue RSpec::Expectations::ExpectationNotMetError
+            rescue ::RSpec::Expectations::ExpectationNotMetError
               false
             else
               true
