@@ -48,14 +48,7 @@ module SwissKnife
       result
     end
 
-    # Taken from http://github.com/sbecker/asset_packager/
     def self.compress_css(source)
-      source.gsub!(/\s+/, " ")           # collapse space
-      source.gsub!(/\/\*(.*?)\*\//, "")  # remove comments - caution, might want to remove this if using css hacks
-      source.gsub!(/\} /, "}\n")         # add line breaks
-      source.gsub!(/\n$/, "")            # remove last break
-      source.gsub!(/ \{ /, " {")         # trim inside brackets
-      source.gsub!(/; \}/, "}")          # trim inside brackets
       source
     end
 
