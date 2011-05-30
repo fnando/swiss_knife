@@ -40,6 +40,7 @@ module SwissKnife
       # read it back in and trim it
       result = ""
       File.open("#{tmp_path}_compressed.js", "r") { |f| result += f.read.strip }
+      result << "\n;"
 
       # delete temp files if they exist
       File.delete("#{tmp_path}_uncompressed.js") if File.exists?("#{tmp_path}_uncompressed.js")
@@ -65,7 +66,6 @@ module SwissKnife
             file << ".#{ext}" unless file =~ /\.#{ext}$/i
 
             f << send("compress_#{ext}", File.read(assets_dir.join(file)))
-            f << "\n;"
           end
         end
       end
