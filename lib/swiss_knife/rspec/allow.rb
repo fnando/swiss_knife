@@ -1,44 +1,42 @@
-module SwissKnife
-  module RSpec
-    module Matchers
-      def allow(value, *values)
-        Allow.new(value, *values)
-      end
+RSpec::Matchers.define :allow do |*values|
+  @failed = []
+  @values = values
 
-      class Allow
-        attr_reader :values, :attribute, :record
+  match_for_should do |record|
+    @record = record
+    matches_against?(false)
+  end
 
-        def initialize(*values)
-          @values = values
-        end
+  match_for_should_not do |record|
+    @record = record
+    matches_against?(true)
+  end
 
-        def matches?(record)
-          @record = record
+  def matches_against?(compare)
+    raise "The allow matcher requires an attribute; use subject.should allow(*values).as(attribute)" unless @attribute
 
-          values.collect {|value|
-            record.send("#{attribute}=", value)
-            record.valid?
-            record.errors[attribute].empty?
-          }.all?
-        end
-
-        def as(attribute)
-          @attribute = attribute
-          self
-        end
-
-        def description
-          "allow #{values.inspect} values for #{attribute.inspect} attribute"
-        end
-
-        def failure_message
-          "expected #{record.inspect} to allow each of #{values.inspect} as #{attribute.inspect} value"
-        end
-
-        def negative_failure_message
-          "expected #{record.inspect} to reject each of #{values.inspect} as #{attribute.inspect} value"
-        end
-      end
+    @values.each do |value|
+      @record.__send__("#{@attribute}=", value)
+      @record.valid?
+      @failed << value if @record.errors[@attribute].empty? == compare
     end
+
+    @failed.empty?
+  end
+
+  failure_message_for_should do |actual|
+    "expected #{@record.inspect} to allow each of #{@values.inspect} as #{@attribute.inspect} value (didn't accept #{@failed.inspect})"
+  end
+
+  failure_message_for_should_not do |actual|
+    "expected #{@record.inspect} to reject each of #{@values.inspect} as #{@attribute.inspect} value (accepted #{@failed.inspect})"
+  end
+
+  chain :as do |attribute|
+    @attribute = attribute
+  end
+
+  description do
+    "allow #{values.inspect} as #{@attribute}"
   end
 end

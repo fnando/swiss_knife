@@ -1,13 +1,13 @@
 require "spec_helper"
 
-describe SwissKnife::RSpec::Matchers::Allow do
+describe "allow matcher" do
   it "allows blank values" do
     klass = Class.new(ActiveRecord::Base) do
       table_name "users"
     end
 
     record = klass.new
-    record.should allow(nil, "").as(:name)
+    record.should allow_values(nil, "").as(:name)
   end
 
   it "requires name to be set" do
@@ -17,7 +17,7 @@ describe SwissKnife::RSpec::Matchers::Allow do
     end
 
     record = klass.new
-    record.should_not allow(nil, "").as(:name)
+    record.should_not allow_values(nil, "").as(:name)
   end
 
   it "allows values" do
@@ -26,6 +26,6 @@ describe SwissKnife::RSpec::Matchers::Allow do
     end
 
     record = klass.new
-    record.should allow("John Doe", "Jane Doe").as(:name)
+    record.should allow_values("John Doe", "Jane Doe").as(:name)
   end
 end
