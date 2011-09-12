@@ -21,7 +21,7 @@ namespace :swiss_knife do
 
   namespace :javascripts do
     desc "Update all JavaScripts"
-    task :update => %w[ i18njs jquery jquery_ujs modernizr dispatcher ]
+    task :update => %w[ i18njs jquery jquery_ujs dispatcher ]
 
     desc "Update I18n JS"
     task :i18njs => :environment do
@@ -36,11 +36,6 @@ namespace :swiss_knife do
     desc "Update jQuery UJS"
     task :jquery_ujs => :environment do
       SwissKnife::JqueryUjs.update
-    end
-
-    desc "Update Modernizr"
-    task :modernizr => :environment do
-      SwissKnife::Modernizr.update
     end
 
     desc "Update Dispatcher JS"

@@ -225,12 +225,12 @@ module SwissKnife
     # Load jQuery from Google's CDN and if the world is collapsing and Google is down,
     # load it locally.
     #
-    #   jquery_script_tag #=> Default to 1.4.4
+    #   jquery_script_tag #=> Default to 1.6.3
     #   jquery_script_tag("1.4.2")
     #
     # The local version should be placed at <tt>public/javascripts/jquery-%{version}.min.js</tt>.
     #
-    def jquery_script_tag(version = "1.4.4")
+    def jquery_script_tag(version = "1.6.3")
       local_path = compute_public_path("jquery-#{version}.min.js", "javascripts")
       remote_path = "#{request.protocol}ajax.googleapis.com/ajax/libs/jquery/#{version}/jquery.min.js"
 
