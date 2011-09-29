@@ -8,7 +8,7 @@ module SwissKnife
     end
 
     def url
-      "http://github.com/rails/jquery-ujs/raw/master/src/rails.js"
+      "https://raw.github.com/rails/jquery-ujs/master/src/rails.js"
     end
   end
 end

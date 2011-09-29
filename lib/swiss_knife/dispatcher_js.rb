@@ -8,7 +8,7 @@ module SwissKnife
     end
 
     def url
-      "http://github.com/fnando/dispatcher-js/raw/master/dispatcher.js"
+      "https://raw.github.com/fnando/dispatcher-js/master/dispatcher.js"
     end
   end
 end
