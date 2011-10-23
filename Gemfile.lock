@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    swiss_knife (1.0.1)
+    swiss_knife (1.0.2)
       rails (>= 3.0.0)
 
 GEM
@@ -113,7 +113,7 @@ GEM
     treetop (1.4.10)
       polyglot
       polyglot (>= 0.3.1)
-    tzinfo (0.3.29)
+    tzinfo (0.3.30)
 
 PLATFORMS
   ruby
