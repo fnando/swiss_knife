@@ -18,9 +18,9 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_dependency "rails", ">= 3.0.0"
-  s.add_development_dependency "rspec-rails", "~> 2.6"
+  s.add_development_dependency "rspec-rails", "~> 2.7"
   s.add_development_dependency "nokogiri"
   s.add_development_dependency "fakeweb"
   s.add_development_dependency "sqlite3"
-  s.add_development_dependency "ruby-debug19"
+  s.add_development_dependency "pry"
 end
