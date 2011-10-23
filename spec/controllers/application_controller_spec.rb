@@ -15,6 +15,11 @@ describe ApplicationController do
     controller.page_title.should == "All products"
   end
 
+  it "should store interpolation options" do
+    controller.page_title :name => "Some product"
+    controller.page_title_options.should == {:name => "Some product"}
+  end
+
   it "should return internationalized title with interpolation options" do
     controller.page_title :name => "Some product"
     controller.stub :action_name => "edit"
