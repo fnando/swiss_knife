@@ -15,12 +15,12 @@ module SwissKnife
     #         index: "All products"
     #
     def page_title(*args)
-      unless args.empty?
+      if args.empty?
+        page_title_get
+      else
         options = args.extract_options!
         page_title_set args.first, options
       end
-
-      page_title_get
     end
 
     private
