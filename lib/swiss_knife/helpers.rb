@@ -96,8 +96,9 @@ module SwissKnife
         :class => [
           "#{controller.controller_name}-#{action_name}",
           "#{controller.controller_name}-#{controller.action_name}",
-          I18n.locale
-        ].join(" ")
+          I18n.locale,
+          Rails.env
+        ].uniq.join(" ")
       }.merge(options)
 
       options[:class] << (" " + options.delete(:append_class).to_s) if options[:append_class]
@@ -231,7 +232,8 @@ module SwissKnife
     # The local version should be placed at <tt>public/javascripts/jquery-%{version}.min.js</tt>.
     #
     def jquery_script_tag(version = "1.6.3")
-      local_path = compute_public_path("jquery-#{version}.min.js", "javascripts")
+      target = respond_to?(:compute_public_path) ? self : asset_paths
+      local_path = target.__send__(:compute_public_path, "jquery-#{version}.min.js", "javascripts")
       remote_path = "#{request.protocol}ajax.googleapis.com/ajax/libs/jquery/#{version}/jquery.min.js"
 
       safe_buffer do

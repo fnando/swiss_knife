@@ -47,6 +47,7 @@ describe SwissKnife::Helpers do
         subject.should have_tag("body#sample-page")
         subject.should have_tag("body.sample-index")
         subject.should have_tag("body.en")
+        subject.should have_tag("body.test")
       end
 
       it "should use alias for create action" do
