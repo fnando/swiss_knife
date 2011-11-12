@@ -68,10 +68,6 @@ module SwissKnife
     #   <%= dispatcher %>
     #
     def dispatcher_tag
-      controller_name = controller.class.name.underscore
-      controller_name.gsub!(/\//, "_")
-      controller_name.gsub!(/_controller$/, "")
-
       %[<meta name="page" content="#{controller_name}##{controller.action_name}" />].html_safe
     end
 
@@ -90,12 +86,13 @@ module SwissKnife
     #
     def body(options = {}, &block)
       action_name = ACTION_ALIASES[controller.action_name] || controller.action_name
+      controller_name_for_css_class = controller_name.gsub(/\_/, "-")
 
       options = {
-        :id => "#{controller.controller_name}-page",
+        :id => "#{controller_name_for_css_class}-page",
         :class => [
-          "#{controller.controller_name}-#{action_name}",
-          "#{controller.controller_name}-#{controller.action_name}",
+          "#{controller_name_for_css_class}-#{action_name}",
+          "#{controller_name_for_css_class}-#{controller.action_name}",
           I18n.locale,
           Rails.env
         ].uniq.join(" ")
@@ -274,6 +271,18 @@ module SwissKnife
       end
 
       buffer.html_safe
+    end
+    
+    private
+    
+    def controller_name
+      unless @controller_name
+        @controller_name = controller.class.name.underscore
+        @controller_name.gsub!(/\//, "_")
+        @controller_name.gsub!(/_controller$/, "")
+      end
+      
+      @controller_name
     end
   end
 end

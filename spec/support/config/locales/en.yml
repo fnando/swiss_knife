@@ -1,5 +1,7 @@
 en:
   titles:
+    admin_products:
+      index: "Listing products"
     products:
       index: "All products"
       new: "Add a new product"
