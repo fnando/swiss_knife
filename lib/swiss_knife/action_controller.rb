@@ -38,7 +38,11 @@ module SwissKnife
 
     def page_title_get
       controller = self unless respond_to?(:controller)
-      controller_name = controller.controller_name
+
+      controller_name = controller.class.name.underscore
+      controller_name.gsub!(/\//, "_")
+      controller_name.gsub!(/_controller$/, "")
+
       action_name = controller.action_name
       action_name = SwissKnife::Helpers::ACTION_ALIASES.fetch(action_name, action_name)
 
