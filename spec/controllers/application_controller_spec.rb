@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe ApplicationController do
   before do
-    controller.stub :controller_name => "products"
+    controller = double("ProductsController")
   end
 
   it "should return inline title" do
@@ -53,5 +53,16 @@ describe ApplicationController do
 
   it "should be added as a helper method" do
     ApplicationController._helper_methods.should include(:page_title)
+  end
+
+  context "with namespace" do
+    before do
+      controller = double("Admin::ProductsController")
+    end
+
+    it "should return internationalized title" do
+      controller.stub :action_name => "index"
+      controller.page_title.should == "Listing products"
+    end
   end
 end
