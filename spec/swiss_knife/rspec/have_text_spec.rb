@@ -1,6 +1,8 @@
-require "spec_helper"
+require "swiss_knife/rspec/have_text"
 
-describe SwissKnife::RSpec::Matchers::HaveText do
+describe "have_text matcher" do
+  include SwissKnife::RSpec::Matchers
+
   it "should match string" do
     "abc".should have_text("abc")
   end
