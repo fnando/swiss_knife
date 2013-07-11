@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.authors     = ["Nando Vieira"]
   s.email       = ["fnando.vieira@gmail.com"]
   s.homepage    = "http://rubygems.org/gems/swiss_knife"
-  s.summary     = "Several helpers for Rails 3"
+  s.summary     = "Several helpers for Rails"
   s.description = s.summary
 
   s.files         = `git ls-files`.split("\n")
@@ -17,10 +17,11 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_dependency "rails", ">= 3.0.0"
-  s.add_development_dependency "rspec-rails", "~> 2.7"
+  s.add_dependency "rails"
+  s.add_development_dependency "rspec-rails"
   s.add_development_dependency "nokogiri"
   s.add_development_dependency "fakeweb"
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "pry"
+  s.add_development_dependency "rake"
 end

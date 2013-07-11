@@ -16,7 +16,7 @@ module SwissKnife
 
         def matches?(subject)
           @subject = subject
-          subject.errors[attribute.to_sym].size.nonzero?
+          subject.errors[attribute.to_sym].any?
         end
 
         def description

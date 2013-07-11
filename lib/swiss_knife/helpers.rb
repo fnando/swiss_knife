@@ -135,23 +135,6 @@ module SwissKnife
       content_tag(tag, capture(&block), options)
     end
 
-    # Create a encrypted mailto link.
-    # <b>THIS API IS NOT RAILS COMPLIANT.</b>
-    #
-    #   mail_to "john@doe.com"
-    #   mail_to "john@doe.com", "Contact me"
-    #
-    def mail_to(email, label = nil)
-      encrypt = proc do |text|
-        text.to_enum(:each_byte).collect {|c| sprintf("&#%d;", c) }.join
-      end
-
-      url = encrypt.call("mailto:#{email}").html_safe
-      label ||= encrypt.call(email).html_safe
-
-      link_to(label, url)
-    end
-
     def javascript_includes(*args)
       options = args.extract_options!
 
@@ -272,16 +255,16 @@ module SwissKnife
 
       buffer.html_safe
     end
-    
+
     private
-    
+
     def controller_name
       unless @controller_name
         @controller_name = controller.class.name.underscore
         @controller_name.gsub!(/\//, "_")
         @controller_name.gsub!(/_controller$/, "")
       end
-      
+
       @controller_name
     end
   end
