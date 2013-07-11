@@ -1,20 +1,20 @@
-require "swiss_knife/rspec/allow"
+require "swiss_knife/rspec/accept"
 require "active_record"
 
 ActiveRecord::Base.establish_connection(adapter: "sqlite3", database: ":memory:")
 
 require File.expand_path("../../../schema", __FILE__)
 
-describe "allow matcher" do
+describe "accept matcher" do
   include SwissKnife::RSpec::Matchers
 
-  it "allows blank values" do
+  it "accepts blank values" do
     klass = Class.new(ActiveRecord::Base) do
       self.table_name = "users"
     end
 
     record = klass.new
-    record.should allow(nil, "").for(:name)
+    record.should accept(nil, "").for(:name)
   end
 
   it "requires name to be set" do
@@ -26,15 +26,15 @@ describe "allow matcher" do
     klass.stub name: "User"
 
     record = klass.new
-    record.should_not allow(nil, "").for(:name)
+    record.should_not accept(nil, "").for(:name)
   end
 
-  it "allows values" do
+  it "accepts values" do
     klass = Class.new(ActiveRecord::Base) do
       self.table_name = "users"
     end
 
     record = klass.new
-    record.should allow("John Doe", "Jane Doe").for(:name)
+    record.should accept("John Doe", "Jane Doe").for(:name)
   end
 end

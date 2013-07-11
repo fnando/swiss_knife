@@ -1,11 +1,11 @@
 module SwissKnife
   module RSpec
     module Matchers
-      def allow(*values)
-        Allow.new(values)
+      def accept(*values)
+        Accept.new(values)
       end
 
-      class Allow
+      class Accept
         attr_accessor :values, :record, :failed, :attribute
 
         def initialize(values)
