@@ -14,7 +14,7 @@ describe "allow matcher" do
     end
 
     record = klass.new
-    record.should allow(nil, "").as(:name)
+    record.should allow(nil, "").for(:name)
   end
 
   it "requires name to be set" do
@@ -26,7 +26,7 @@ describe "allow matcher" do
     klass.stub name: "User"
 
     record = klass.new
-    record.should_not allow(nil, "").as(:name)
+    record.should_not allow(nil, "").for(:name)
   end
 
   it "allows values" do
@@ -35,6 +35,6 @@ describe "allow matcher" do
     end
 
     record = klass.new
-    record.should allow("John Doe", "Jane Doe").as(:name)
+    record.should allow("John Doe", "Jane Doe").for(:name)
   end
 end

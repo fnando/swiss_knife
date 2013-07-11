@@ -1,4 +1,5 @@
 ENV["RAILS_ENV"] = "test"
+require "bundler/setup"
 require "rails"
 require "ostruct"
 require "swiss_knife"

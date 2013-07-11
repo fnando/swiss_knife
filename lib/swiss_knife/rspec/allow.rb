@@ -35,7 +35,7 @@ module SwissKnife
           "expected #{record.inspect} to reject each of #{values.inspect} as #{attribute.inspect} value (accepted #{failed.inspect})"
         end
 
-        def as(attribute)
+        def for(attribute)
           @attribute = attribute
           self
         end
