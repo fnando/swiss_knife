@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    swiss_knife (2.0.1)
+    swiss_knife (2.0.2)
       rails
 
 GEM
