@@ -14,7 +14,7 @@ describe "accept matcher" do
     end
 
     record = klass.new
-    record.should accept(nil, "").for(:name)
+    expect(record).to accept(nil, "").for(:name)
   end
 
   it "requires name to be set" do
@@ -23,10 +23,10 @@ describe "accept matcher" do
       validates_presence_of :name
     end
 
-    klass.stub name: "User"
+    allow(klass).to receive_messages name: "User"
 
     record = klass.new
-    record.should_not accept(nil, "").for(:name)
+    expect(record).not_to accept(nil, "").for(:name)
   end
 
   it "accepts values" do
@@ -35,6 +35,6 @@ describe "accept matcher" do
     end
 
     record = klass.new
-    record.should accept("John Doe", "Jane Doe").for(:name)
+    expect(record).to accept("John Doe", "Jane Doe").for(:name)
   end
 end

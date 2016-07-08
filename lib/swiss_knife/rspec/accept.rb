@@ -31,7 +31,7 @@ module SwissKnife
           "expected #{record.inspect} to allow each of #{values.inspect} as #{attribute.inspect} value (didn't accept #{failed.inspect})"
         end
 
-        def negative_failure_message
+        def failure_message_when_negated
           "expected #{record.inspect} to reject each of #{values.inspect} as #{attribute.inspect} value (accepted #{failed.inspect})"
         end
 

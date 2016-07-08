@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "nokogiri"
   s.add_development_dependency "fakeweb"
   s.add_development_dependency "sqlite3"
-  s.add_development_dependency "pry"
+  s.add_development_dependency "pry-meta"
   s.add_development_dependency "rake"
+  s.add_development_dependency "transpec"
 end

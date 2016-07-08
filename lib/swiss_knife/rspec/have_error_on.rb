@@ -27,7 +27,7 @@ module SwissKnife
           "expected #{subject.inspect} to have errors on #{attribute.inspect}"
         end
 
-        def negative_failure_message
+        def failure_message_when_negated
           "expected #{subject.inspect} to have no errors on #{attribute.inspect}"
         end
       end

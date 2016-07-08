@@ -31,7 +31,7 @@ module SwissKnife
           "expected #{subject.inspect} to include #{matcher.inspect}"
         end
 
-        def negative_failure_message
+        def failure_message_when_negated
           "expected #{subject.inspect} to exclude #{matcher.inspect}"
         end
       end

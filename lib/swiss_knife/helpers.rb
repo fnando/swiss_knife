@@ -7,10 +7,7 @@ module SwissKnife
     }
 
     DEFAULT_GRAVATARS = [:mm, :identicon, :monsterid, :wavatar, :retro, 404]
-    GRAVATAR_URLS = {
-      :http  => "http://www.gravatar.com/avatar/",
-      :https => "https://secure.gravatar.com/avatar/"
-    }
+    GRAVATAR_HOST = "https://secure.gravatar.com/avatar/"
 
     # Display gravatar images.
     #
@@ -28,25 +25,25 @@ module SwissKnife
       options.reverse_merge!(
         :rating  => :g,
         :default => "gravatar.jpg",
-        :ssl     => request.ssl?,
         :size    => 32
       )
 
       params = {
+        :s => options[:size],
         :r => options[:rating],
         :d => DEFAULT_GRAVATARS.include?(options[:default]) ?
-          options[:default] : compute_public_path(options[:default], "images", nil, true),
-        :s => options[:size]
+                                          options[:default] :
+                                          asset_path(options[:default])
       }
 
       url = String.new.tap do |s|
-        s << (options[:ssl] ? GRAVATAR_URLS[:https] : GRAVATAR_URLS[:http])
+        s << GRAVATAR_HOST
         s << email.to_s << ".jpg"
         s << "?"
         s << params.collect {|k, v| v.to_s.to_query(k) }.join("&")
       end
 
-      image_tag url, { :class => "gravatar", :alt => options[:alt], :title => options[:title] }
+      image_tag url, class: "gravatar", alt: options[:alt], title: options[:title]
     end
 
     # Display flash messages.
@@ -61,14 +58,6 @@ module SwissKnife
           flash.discard(name)
         end
       end
-    end
-
-    # Create a meta tag for http://github.com/fnando/dispatcher-js.
-    #
-    #   <%= dispatcher %>
-    #
-    def dispatcher_tag
-      %[<meta name="page" content="#{controller_name}##{controller.action_name}" />].html_safe
     end
 
     # Wrap the content in a <BODY> tag.
@@ -86,7 +75,7 @@ module SwissKnife
     #
     def body(options = {}, &block)
       action_name = ACTION_ALIASES[controller.action_name] || controller.action_name
-      controller_name_for_css_class = controller_name.gsub(/\_/, "-")
+      controller_name_for_css_class = controller.controller_name.gsub(/\_/, "-")
 
       options = {
         :id => "#{controller_name_for_css_class}-page",
@@ -135,46 +124,6 @@ module SwissKnife
       content_tag(tag, capture(&block), options)
     end
 
-    def javascript_includes(*args)
-      options = args.extract_options!
-
-      safe_buffer do |html|
-        args.each do |name|
-          bundle = SwissKnife::Assets.config["javascripts"][name.to_s] rescue nil
-
-          if SwissKnife::Assets.merge? && bundle
-            html << javascript_include_tag("#{name}_packaged".html_safe, options)
-          elsif bundle
-            bundle.each do |file|
-              html << javascript_include_tag(file.to_s.html_safe, options)
-            end
-          else
-            html << javascript_include_tag(name.to_s.html_safe, options)
-          end
-        end
-      end
-    end
-
-    def stylesheet_includes(*args)
-      options = args.extract_options!
-
-      safe_buffer do |html|
-        args.each do |name|
-          bundle = SwissKnife::Assets.config["stylesheets"][name.to_s] rescue nil
-
-          if SwissKnife::Assets.merge? && bundle
-            html << stylesheet_link_tag("#{name}_packaged", options)
-          elsif bundle
-            bundle.each do |file|
-              html << stylesheet_link_tag("#{file}", options)
-            end
-          else
-            html << stylesheet_link_tag("#{name}", options)
-          end
-        end
-      end
-    end
-
     def fieldset(legend, options = {}, &block)
       legend = t(legend, :default => legend.to_s)
 
@@ -200,31 +149,6 @@ module SwissKnife
         html << submit_tag(t(options[:button], :default => options[:button]), :class => "button")
         html << " "
         html << link_to(t(options[:cancel], :default => options[:cancel]), url, :class => "cancel")
-      end
-    end
-
-    # Load jQuery from Google's CDN and if the world is collapsing and Google is down,
-    # load it locally.
-    #
-    #   jquery_script_tag #=> Default to 1.6.3
-    #   jquery_script_tag("1.4.2")
-    #
-    # The local version should be placed at <tt>public/javascripts/jquery-%{version}.min.js</tt>.
-    #
-    def jquery_script_tag(version = "1.6.3")
-      target = respond_to?(:compute_public_path) ? self : asset_paths
-      local_path = target.__send__(:compute_public_path, "jquery-#{version}.min.js", "javascripts")
-      remote_path = "#{request.protocol}ajax.googleapis.com/ajax/libs/jquery/#{version}/jquery.min.js"
-
-      safe_buffer do
-        %[
-      		<script type="text/javascript" src="#{remote_path}"></script>
-      		<script type="text/javascript">
-      			if (typeof jQuery === "undefined") {
-      				document.write(unescape("%3Cscript src='#{local_path}' type='text/javascript'%3E%3C/script%3E"));
-      			};
-      		</script>
-        ]
       end
     end
 
